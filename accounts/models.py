@@ -22,6 +22,7 @@ class User (AbstractUser):
     date_of_birth = models.CharField(blank = True, null=True)
     address = models.TextField(blank = True, null=True)
     is_customer = models.BooleanField(default=True)
+    is_staff = models.BooleanField(default=False)
     is_hotel_manager = models.BooleanField(default=False)
     profile_pic = models.ImageField(upload_to='user_images/')
     email_verif = models.BooleanField(default=False)

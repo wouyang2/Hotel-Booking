@@ -1,9 +1,10 @@
 from django.contrib import admin
 from models import User
+from django.contrib.auth.admin import UserAdmin
 # Register your models here.
 
 @admin.register(User)
-class UserAdmin(admin.ModelAdmin):
+class UserAdmin(UserAdmin):
 
     list_display = (
         'id',
@@ -12,6 +13,7 @@ class UserAdmin(admin.ModelAdmin):
         'date_of_birth',
         'address',
         'is_customer',
+        'is_staff',
         'is_hotel_manager',
         'emial_verif',
         'created_at'
@@ -25,3 +27,9 @@ class UserAdmin(admin.ModelAdmin):
 
     # Fields to make read-only after creation (important for transaction integrity)
     readonly_fields = ('created_at', 'updated_at')
+
+    fieldsets = UserAdmin.fieldsets + (
+        ('Additional Info', {'fields': ('phone_number', 'date_of_birth', 'address', 
+                                       'is_customer', 'is_hotel_manager', 
+                                       'profile_picture', 'email_verified')}),
+    )

@@ -28,6 +28,11 @@ class Booking (models.Model):
     to_user = models.ForeignKey(User, on_delete=models.CASCADE, related_name="user booking")
     to_hotel = models.ForeignKey(Hotel, on_delete=models.CASCADE, related_name="hotel booking")
 
+    @property
+    def get_user_email(self):
+        return self.to_user.email
+    user_email = get_user_email
+
     # Check in and out date field
     check_in_date = models.DateField(auto_add=True)
     check_out_date = models.DateField(auto_add=True)
