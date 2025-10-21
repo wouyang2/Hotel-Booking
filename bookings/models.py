@@ -25,8 +25,8 @@ class Booking (models.Model):
     """
 
     booking_id = models.UUIDField(primary_key=True, default= uuid.uuid4, editable=False)
-    to_user = models.ForeignKey(User, on_delete=models.CASCADE, related_name="user booking")
-    to_hotel = models.ForeignKey(Hotel, on_delete=models.CASCADE, related_name="hotel booking")
+    to_user = models.ForeignKey(User, on_delete=models.CASCADE, related_name="user_booking")
+    to_hotel = models.ForeignKey(Hotel, on_delete=models.CASCADE, related_name="hotel_booking")
 
     @property
     def get_user_email(self):
@@ -34,8 +34,8 @@ class Booking (models.Model):
     user_email = get_user_email
 
     # Check in and out date field
-    check_in_date = models.DateField(auto_add=True)
-    check_out_date = models.DateField(auto_add=True)
+    check_in_date = models.DateField(auto_now=True)
+    check_out_date = models.DateField(auto_now=True)
 
     # number of adults and children
     num_of_children = models.PositiveSmallIntegerField()
@@ -52,7 +52,7 @@ class Booking (models.Model):
         CHECKED_OUT = 'CHECKED OUT'
         CANCELLED = 'CANCELLED', 'Booking Cancelled'
 
-    bookingstatus = models.CharField(max_length=10, 
+    bookingstatus = models.CharField(max_length=15, 
                                      choices=BookingStatus.choices, 
                                      default=BookingStatus.PENDING, 
                                      help_text="current status of booking process")
@@ -84,21 +84,28 @@ class Payment(models.Model):
 
     booking = models.OneToOneField(Booking, on_delete=models.CASCADE, related_name="payment")
 
-    amount = models.DecimalField(validators=[MinValueValidator(0)])
+    amount = models.DecimalField(validators=[MinValueValidator(0)],decimal_places=2, max_digits=10)
 
     # Payment method
-    class Payment_method():
+    class Payment_method:
+        CREDIT_CARD = 'CC'
+        DEBIT_CARD = 'DC'
+        PAYPAL = 'PP'
+        CASH = "CASH"
+        GUEST_CHECKOUT = 'GC'
 
-        CREDIT_CARD = 'Credit Card'
-        DEBIT_CARD = 'Debit Card'
-        PAYPAL = 'PayPal'
-        CASH = "Cash"
-        GUEST_CHECKOUT = 'Guest Checkout'
+        CHOICES =[
+            (CREDIT_CARD, 'Credit Card'),
+            (DEBIT_CARD, 'Debit Card'),
+            (PAYPAL, 'PayPal'),
+            (CASH, 'Cash'),
+            (GUEST_CHECKOUT, 'Guest Checkout'),
+        ]
 
-    payment_method = models.TextField(choices=Payment_method, default=Payment_method.CREDIT_CARD, help_text="how customer are going to pay")
+    payment_method = models.CharField(max_length = 4, choices=Payment_method.CHOICES, default=Payment_method.CREDIT_CARD, help_text="how customer are going to pay")
 
     # Transaction ID 
-    payment_transaction_id = models.CharField(unique=255)
+    payment_transaction_id = models.CharField(unique=255,max_length=100)
 
     # Payment Status
     class Payment_Status(models.TextChoices):
@@ -127,9 +134,9 @@ class Review(models.Model):
     Make it unique_together for user and booking (one review per stay)
     """
 
-    hotel = models.ForeignKey(Hotel, on_delete=models.CASCADE, help_text="review to hotel maybe", related_name = 'hotel review')
-    user = models.ForeignKey(User, on_delete=models.CASCADE, help_text="review written by users maybe", related_name='customer review')
-    booking = models.OneToOneField(Booking, on_delete=models.CASCADE, help_text="optional link to booking, do not know what for", related_name='booking review')
+    hotel = models.ForeignKey(Hotel, on_delete=models.CASCADE, help_text="review to hotel maybe", related_name = 'hotel_review')
+    user = models.ForeignKey(User, on_delete=models.CASCADE, help_text="review written by users maybe", related_name='customer_review')
+    booking = models.OneToOneField(Booking, on_delete=models.CASCADE, help_text="optional link to booking, do not know what for", related_name='booking_review')
 
     rating = models.PositiveSmallIntegerField(validators=[MaxValueValidator(5), MinValueValidator(0)], null=False, blank=False, default=5)
 
@@ -153,7 +160,7 @@ class Review(models.Model):
     is_stayed = models.BooleanField(null=False, blank=False, default=True, help_text="Verification flag (true if user actually stayed)")
 
     created_at = models.DateTimeField(auto_now_add=True)
-    updated_at = models.DateTimeField (auto_add=True)
+    updated_at = models.DateTimeField (auto_now=True)
 
     class Meta:
         unique_together = [['user', 'booking']]

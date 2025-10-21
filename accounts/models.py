@@ -18,16 +18,34 @@ class User (AbstractUser):
                                  message="Phone number must be entered in the format: '+999999999'. Up to 15 digits allowed.") 
 
     email = models.EmailField(max_length=50, blank=False, unique= True)
-    phone = models.CharField(validators=phone_regex, blank=True, null=True)
-    date_of_birth = models.CharField(blank = True, null=True)
+    phone = models.CharField(validators=(phone_regex,), blank=True, null=True, max_length=15)
+    date_of_birth = models.DateField(blank = True, null=True)
     address = models.TextField(blank = True, null=True)
     is_customer = models.BooleanField(default=True)
-    is_staff = models.BooleanField(default=False)
+    #is_staff = models.BooleanField(default=False)
     is_hotel_manager = models.BooleanField(default=False)
-    profile_pic = models.ImageField(upload_to='user_images/')
+    profile_pic = models.ImageField(upload_to='user_images/',null= True)
     email_verif = models.BooleanField(default=False)
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now = True)
+
+    # Add unique related_names to prevent clashes
+    groups = models.ManyToManyField(
+        "auth.Group",
+        related_name="accounts_users",
+        blank=True,
+        help_text="The groups this user belongs to.",
+        verbose_name="groups",
+    )
+    user_permissions = models.ManyToManyField(
+        "auth.Permission",
+        related_name="accounts_users",
+        blank=True,
+        help_text="Specific permissions for this user.",
+        verbose_name="user permissions",
+    )
+
+    USERNAME_FIELD = 'email'
 
     def __str__(self):
         return self.email

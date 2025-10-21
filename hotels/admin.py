@@ -20,7 +20,7 @@ class HotelAdmin(admin.ModelAdmin):
         'id',
         'name',
         'slug',
-        'adress',
+        'address',
         'city',
         'state',
         'country',
@@ -30,7 +30,7 @@ class HotelAdmin(admin.ModelAdmin):
         'website',
         'rating',
         'is_active',
-        'is_feature',
+        'is_featured',
         'created_at'
     )
 
@@ -54,7 +54,7 @@ class HotelAdmin(admin.ModelAdmin):
 
 @admin.register(RoomType)
 class RoomType(admin.ModelAdmin):
-    list_display = ('name')
+    list_display = ('name',)
     
 @admin.register(Room)
 class RoomAdmin(admin.ModelAdmin):
@@ -64,17 +64,17 @@ class RoomAdmin(admin.ModelAdmin):
         'room_type',
         'room_number',
         'floor_number',
-        'max_occupany',
+        'max_occupancy',
         'number_of_bed',
         'price_per_night',
-        'is_availiable',
+        'is_available',
         'created_at'
     )
 
     list_filter = (
         'hotel_belong_to',
         'room_type',
-        'is_availiable',
+        'is_available',
         'number_of_bed',
         'price_per_night'
     )
