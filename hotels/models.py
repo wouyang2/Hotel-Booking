@@ -15,7 +15,6 @@ class Hotel (models.Model):
     Status fields (is it active? is it featured?)
     Timestamps
     """
-
     phone_regex = RegexValidator(regex=r'^\+?1?\d{9,15}$', 
                                  message="Phone number must be entered in the format: '+999999999'. Up to 15 digits allowed.")
     
@@ -28,7 +27,7 @@ class Hotel (models.Model):
     city = models.CharField(max_length = 255)
     state = models.CharField(max_length=255)
     country = models.CharField(max_length=255)
-    zip_code = models.IntegerField()
+    zip_code = models.IntegerField(blank=False)
 
     # Contact
     phone = models.CharField(validators=(phone_regex,), max_length=15)
@@ -36,7 +35,7 @@ class Hotel (models.Model):
     website = models.URLField()
 
     # Link to the manager    ?? how to know if the user a manager ??
-    link_to_manager = models.ForeignKey(User, on_delete=models.CASCADE, related_name="manager_of_the_hotel")
+    link_to_manager = models.ManyToManyField(User, related_name="manager_of_the_hotel")
 
     # Rating
     rating = models.DecimalField(validators=[MinValueValidator(0), MaxValueValidator(5)], decimal_places=1,max_digits=3)
@@ -82,11 +81,11 @@ class Room (models.Model):
 
     hotel_belong_to = models.ForeignKey(Hotel, on_delete=models.CASCADE, related_name="hotel_room")
     room_type = models.ForeignKey(RoomType, on_delete=models.CASCADE, related_name="room_type")
-    room_number = models.PositiveIntegerField(unique = True)  # how to ensure they are like 101, 201,... 
+    room_number = models.CharField(max_length=10)  # how to ensure they are like 101, 201,... 
     floor_number = models.IntegerField(validators=[MaxValueValidator(10), MinValueValidator(1)])
 
     # Capacity info
-    max_occupancy = models.PositiveIntegerField(validators=[MaxValueValidator(4)])
+    max_occupancy = models.PositiveIntegerField(validators=[MaxValueValidator(4)], null=True)
     number_of_bed = models.PositiveSmallIntegerField(validators=[MinValueValidator(1),MaxValueValidator(2)])
 
     price_per_night = models.DecimalField(validators=[MaxValueValidator(500), MinValueValidator(50)], decimal_places=2, max_digits=5)
@@ -105,7 +104,7 @@ class Room (models.Model):
     updated_at = models.DateTimeField(auto_now=True)
 
     class Meta:
-        unique_together = [['hotel_belong_to', 'room_number']]
+        unique_together = ['hotel_belong_to', 'room_number']
 
     def __str__ (self):
         return [self.hotel_belong_to, self.room_type, str(self.room_number)]
