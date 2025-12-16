@@ -7,6 +7,7 @@ from .models import Hotel, Room, Hotel_Image, Room_Image, RoomType
 class HotelImageInline(admin.TabularInline):
     model = Hotel_Image
     extra = 1
+    show_change_link = True
 
 class RoomInline(admin.TabularInline):
     model = Room
@@ -48,6 +49,7 @@ class HotelAdmin(admin.ModelAdmin):
         'country',
         'zip_code'
     )
+    list_display_links = ('id', 'name')
 
     prepopulated_fields = {'slug': ('name',)}
     inlines = [RoomInline, HotelImageInline]
@@ -55,12 +57,16 @@ class HotelAdmin(admin.ModelAdmin):
 @admin.register(RoomType)
 class RoomType(admin.ModelAdmin):
     list_display = ('name',)
+
+class RoomImageInline(admin.TabularInline):
+    model = Room_Image
+    extra = 1
     
 @admin.register(Room)
 class RoomAdmin(admin.ModelAdmin):
 
     list_display = (
-        'hotel_belong_to',
+        'hotel',
         'room_type',
         'room_number',
         'floor_number',
@@ -72,7 +78,7 @@ class RoomAdmin(admin.ModelAdmin):
     )
 
     list_filter = (
-        'hotel_belong_to',
+        'hotel',
         'room_type',
         'is_available',
         'number_of_bed',
@@ -80,10 +86,11 @@ class RoomAdmin(admin.ModelAdmin):
     )
 
     search_fields = (
-        'hotel_belong_to',
+        'hotel',
         'created_at',
         'is_availiable'
         'room_type',
         'room_number'
     )
+    inlines = [RoomImageInline]
     

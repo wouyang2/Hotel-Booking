@@ -131,7 +131,7 @@ class Command(BaseCommand):
                 for floor in range(1,3):
                     for room_num in range(1, number_of_room):
                         Room.objects.create(
-                            hotel_belong_to = hotel,
+                            hotel = hotel,
                             room_type=room_type_objs[room_num % len(room_type_objs)],
                             room_number = f"{floor}0{room_num}",
                             floor_number = floor,

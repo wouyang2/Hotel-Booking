@@ -79,7 +79,7 @@ class Room (models.Model):
     Timestamps
     """
 
-    hotel_belong_to = models.ForeignKey(Hotel, on_delete=models.CASCADE, related_name="hotel_room")
+    hotel = models.ForeignKey(Hotel, on_delete=models.CASCADE, related_name="hotel_room")
     room_type = models.ForeignKey(RoomType, on_delete=models.CASCADE, related_name="room_type")
     room_number = models.CharField(max_length=10)  # how to ensure they are like 101, 201,... 
     floor_number = models.IntegerField(validators=[MaxValueValidator(10), MinValueValidator(1)])
@@ -104,15 +104,15 @@ class Room (models.Model):
     updated_at = models.DateTimeField(auto_now=True)
 
     class Meta:
-        unique_together = ['hotel_belong_to', 'room_number']
+        unique_together = ['hotel', 'room_number']
 
     def __str__ (self):
-        return [self.hotel_belong_to, self.room_type, str(self.room_number)]
+        return f"Room {self.room_number} - {self.room_type.name}"
 
     
 class Hotel_Image(models.Model):
 
-    link_to_hotel = models.ForeignKey(Hotel, on_delete=models.CASCADE, related_name="hotel_image")
+    hotel = models.ForeignKey(Hotel, on_delete=models.CASCADE, related_name="hotel_image")
 
     image = models.ImageField(upload_to='hotel_images/')
 
@@ -122,7 +122,7 @@ class Hotel_Image(models.Model):
 
 class Room_Image(models.Model):
 
-    link_to_room = models.ForeignKey(Room, on_delete=models.CASCADE, related_name="room_image")
+    room = models.ForeignKey(Room, on_delete=models.CASCADE, related_name="room_image")
 
     image = models.ImageField(upload_to='room_images/')
 
