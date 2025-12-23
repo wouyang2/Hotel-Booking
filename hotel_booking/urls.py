@@ -23,9 +23,9 @@ from django.urls import include
 
 urlpatterns = [
     path("admin/", admin.site.urls),
-    path("", include("hotels.url")),
-    path("accounts/", include("accounts.url")),
-    path("bookings/", include("books.url"))
+    path("", include("hotels.urls")),
+    path("accounts/", include("accounts.urls")),
+    # path("bookings/", include("books.urls"))
 ]
 
 if settings.DEBUG:

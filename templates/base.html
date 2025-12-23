@@ -1,0 +1,31 @@
+{% load static %}
+
+<!DOCTYPE html>
+<html>
+<head>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"> </meta>
+    <title> {% block title %}Hotel Booking{% endblock %} </title>
+    <link rel="stylesheet" href="{% static 'css/style.css' %}?v=1">
+</head>
+
+<body>
+    <!-- navigation bar section -->
+    {%include 'includes/navbar.html'%}
+
+    <!-- django message section  -->
+    <div class= 'message-section'>{%include 'includes/messages.html'%} </div>
+    
+    <!-- main content section -->
+    <main class = "content"> 
+        {% block content %}
+
+        {% endblock content %}
+    </main>
+
+    <footer class="footer">
+        <p>&copy; 2025 My Website</p>
+    </footer>
+
+    <script class = "js"></script>
+</body>
+</html>

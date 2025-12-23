@@ -1,0 +1,17 @@
+{% extends "base.html" %}
+
+{%block title%}
+     Home Page - My Website
+{%endblock title%}
+
+{% block content %}
+    <section class = "hero"> 
+        <h1 class = "home-header"> Welcome!! </h1>
+        <form class ="searchbar", action = "{% url 'hotels' %}", method="get"> 
+            <label for="search-input" class = "searchbar-icon">🔎</label>
+            <input type="text" id="search-input" name="query" placeholder="Hotel Search...">
+            <button type="submit">Search</button>
+        </form>
+        <img src="templates/background_img/hotel-booking-reservation-travel-reception-concept.jpg" alt="Italian Trulli">
+    </section>
+{% endblock content %}

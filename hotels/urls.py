@@ -8,8 +8,8 @@ from django.urls import path
 from . import views
 
 urlpatterns = [
-    path("", name="home_page"),
-    path('hotels/', name = "hotels"),
-    path('hotels/<slug:slug>', name="slug"),
-    path('search/', name="search_results")
+    path("", views.hotels ,name="home_page"),
+    path('hotels/', views.hotel_list ,name = "hotels"),
+    path('hotels/<slug:slug>', views.hotels ,name="slug"),
+    path('search/', views.hotels ,name="search_results")
 ]

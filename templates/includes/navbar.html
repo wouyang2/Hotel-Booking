@@ -1,0 +1,32 @@
+<nav class = "navbar"> 
+    <div class="navbar-left"> 
+        <a href = "{% url 'home_page' %}" class="home">
+            <span role = "img" aria-label="home">🛖</span></a> 
+
+        <a href = "{% url 'hotels' %}" class= "hotel" >
+            <span role = "img" aria-label="hotel">🏨</span></a> 
+
+        <form class ="searchbar", action = "{% url 'hotels' %}", method="get"> 
+            <label for="search-input" class = "searchbar-icon">🔎</label>
+            <input type="text" id="search-input" name="query" placeholder="Hotel Search...">
+            <button type="submit">Search</button>
+        </form>
+    </div>
+
+    <div class = "authentication">
+        {% if user.is_authenticated %}
+            <span class = "welcome-text">Hi, {{user.username}}</span>
+            <a href="{% url 'profile' %}" class = "home-profile">
+                <span role = 'img', aria-label = "home-profile">👤</span></a> <br>
+            <a href = "{% url 'logout' %}" class = "logout"> 
+                <span role = 'img', aria-label = "logout">⛓️‍💥</span></a> <br>
+            </a>
+        {% else %}
+            <a href = "{% url  'login' %}" class = "home-login"> 
+                <span role = "img" aria-label="home-login">🗝️</span></a>
+            <a href = "{% url 'register' %}" class = "home-register"> 
+                <span role = "img" aria-label="home-register">🚀</span></a>
+        {% endif %}
+    </div>
+    
+</nav>

@@ -10,9 +10,9 @@ from django.urls import path
 from . import views
 
 urlpatterns = [
-    path('register/', views.registers, name='register'),
-    path('login/', views.login, name='login'),
-    path('logout/', views.logout, name='logout'),
-    path('profile/', views.profile, name='profile'),
-    path('profile/edit', views.profile_edit, name='profile_edit'),
+    path('register/', views.custom_register, name='register'),
+    path('login/', views.custom_login, name='login'),
+    path('logout/', views.custom_logout, name='logout'),
+    path('profile/', views.custom_profile, name='profile'),
+    path('profile/edit', views.accounts, name='profile_edit'),
 ]

@@ -3,7 +3,7 @@ from accounts.models import User
 from hotels.models import Hotel, Room
 from django.core.validators import MaxValueValidator, MinValueValidator
 import uuid
-
+from django.conf import settings
 # Create your models here.
 
 class Booking (models.Model):
@@ -25,12 +25,12 @@ class Booking (models.Model):
     """
 
     booking_id = models.UUIDField(primary_key=True, default= uuid.uuid4, editable=False)
-    to_user = models.ForeignKey(User, on_delete=models.CASCADE, related_name="user_booking")
-    to_hotel = models.ForeignKey(Hotel, on_delete=models.CASCADE, related_name="hotel_booking")
+    user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE, related_name="user_booking")
+    hotel = models.ForeignKey(Hotel, on_delete=models.CASCADE, related_name="hotel_booking")
 
     @property
     def get_user_email(self):
-        return self.to_user.email
+        return self.user.email
     user_email = get_user_email
 
     # Check in and out date field
@@ -135,7 +135,7 @@ class Review(models.Model):
     """
 
     hotel = models.ForeignKey(Hotel, on_delete=models.CASCADE, help_text="review to hotel maybe", related_name = 'hotel_review')
-    user = models.ForeignKey(User, on_delete=models.CASCADE, help_text="review written by users maybe", related_name='customer_review')
+    user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE, help_text="review written by users maybe", related_name='customer_review')
     booking = models.OneToOneField(Booking, on_delete=models.CASCADE, help_text="optional link to booking, do not know what for", related_name='booking_review')
 
     rating = models.PositiveSmallIntegerField(validators=[MaxValueValidator(5), MinValueValidator(0)], null=False, blank=False, default=5)

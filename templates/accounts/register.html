@@ -1,0 +1,15 @@
+{%extends 'base.html'%}
+
+{%block title%}
+    User Register
+    {%endblock%}
+
+{%block content%}
+<h1> User Register </h1>
+<form method = "post" class = "login-with-validation" action = "">
+    {% csrf_token %}
+    {{form}}
+    <button class ="form-submit"> Submit </button>
+</form>
+
+{%endblock%}

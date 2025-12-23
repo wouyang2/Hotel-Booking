@@ -1,0 +1,156 @@
+body {
+    margin:0;
+    padding:0;
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh;
+}
+
+/*navbar*/
+.navbar {
+    background-color: lightseagreen;
+    min-height: 100px;
+    height: auto;
+}
+
+.navbar-left{
+    display: flex;
+    gap:10px;
+}
+
+
+.home, .hotel {
+    font-size: 70px;
+    display: flex;
+    text-decoration: none;
+}
+
+.searchbar {
+    display:flex;
+    justify-content: flex-end;
+    border: none;
+}
+
+.searchbar-icon {
+    font-size: 70px;
+}
+
+.authentication {
+    display: flex;
+    justify-content: flex-end;
+    margin-top: -70px;
+    gap: 5px;
+    margin-left: -40px;
+}
+
+.welcome-text{
+    font-family: "Open Sans", sans-serif;
+    font-optical-sizing: auto;
+    font-weight: 10;
+    font-style: normal;
+    font-variation-settings: "wdth" 100;
+    margin-top: 7px;
+    font-size:20px
+}
+
+.home-login, .home-register, .home-profile, .logout{
+    font-size:50px;
+    text-decoration: none;
+}
+
+/* login.html*/
+.login-compliment-section {
+    gap: 20px;
+    text-decoration: none;
+}
+
+.register-link, .forget-link{
+    text-decoration: none;
+    margin:10px
+}
+
+/* PROFILE PAGE */
+.profile-page {
+    font-family: "Open Sans", sans-serif;
+    font-optical-sizing: auto;
+    font-weight: 10;
+    font-style: normal;
+    font-variation-settings: "wdth" 100;
+    border: 1px solid black;
+    text-align: center;
+    max-width: 800px;
+    margin: 2rem auto;
+    padding: 1rem;
+}
+
+.welcome-section{
+    margin-bottom: 2rem;
+}
+.welcome-section p {
+    font-size: 17px;
+}
+
+.account {
+    background: #fff;
+    padding: 0.2rem;
+    padding-bottom: 1.5rem;
+    margin-bottom: 1.5rem;
+    border-radius: 7px;
+    box-shadow: 0 2px 6px rgba(0,0,0,0.05);
+}
+
+.user-info {
+    margin-bottom: 0.5rem;
+}
+
+.user-info li{
+    list-style-type: none;
+}
+
+.user-actions {
+    margin-top: 0.5rem;
+    display: flex;
+    justify-content: center;
+    gap: 20px;
+}
+
+.btn {
+    text-decoration: none;
+}
+
+.btn-secondary{
+    text-decoration: none;
+}
+
+.manager-link {
+    text-decoration: none;
+}
+
+.no-booking {
+    color: #777;
+    font-style: italic;
+}
+
+.booking-link{
+    text-decoration: none;
+}
+
+/* Home Page */
+.hero {
+    display:flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.content {
+    min-height: 90vh;
+}
+
+.footer p{
+    flex:1;
+    text-align: center;
+    background-color: burlywood;
+    width: 100wh;
+    padding: 10px;
+    border: 1px color black;
+}
