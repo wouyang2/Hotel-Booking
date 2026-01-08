@@ -1,0 +1,6 @@
+<h1> Hotel list <h1>
+{% for hotel in hotels%}
+    <ul>
+        <li> <a href = {% url 'slug' slug=hotel.slug%}>  {{hotel.name}} </a> 
+    </ul>
+{%endfor%}

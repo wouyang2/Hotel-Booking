@@ -57,6 +57,21 @@ class Hotel (models.Model):
 
     def __str__ (self):
         return self.name
+
+    def get_amenities(self):
+        amenities = []
+        if self.parking:
+            amenities.append('Parking')
+        if self.pool:
+            amenities.append('Pool')
+        if self.wifi:
+            amenities.append('Wifi')
+        if self.gym:
+            amenities.append('Gym')
+        if self.laundry:
+            amenities.append('Landury')
+
+        
     
 class RoomType(models.Model):
     """Define types of rooms like Single, Double, Suite, etc."""
@@ -102,6 +117,23 @@ class Room (models.Model):
 
     created_at = models.DateField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
+
+    def get_amenities(self):
+        amenities = []
+        if self.ac:
+            amenities.append(('Air Conditioner', "fa-regular fa-snowflake"))
+        if self.tv:
+            amenities.append(('TV',"fa-solid fa-tv"))
+        if self.minibar:
+            amenities.append(('MiniBar', "fa-solid fa-whiskey-glass"))
+        if self.cloth_iron:
+            amenities.append(('Cloth Iron', "fa-solid fa-shirt"))
+        if self.bathtub:
+            amenities.append(('Bathtub', "fa-solid fa-bath"))
+        if self.bacolny:
+            amenities.append(('Bacolny', "fa-solid fa-umbrella-beach"))
+        return amenities
+        
 
     class Meta:
         unique_together = ['hotel', 'room_number']

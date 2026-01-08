@@ -6,12 +6,74 @@
 
 {% block content %}
     <section class = "hero"> 
-        <h1 class = "home-header"> Welcome!! </h1>
-        <form class ="searchbar", action = "{% url 'hotels' %}", method="get"> 
-            <label for="search-input" class = "searchbar-icon">🔎</label>
-            <input type="text" id="search-input" name="query" placeholder="Hotel Search...">
-            <button type="submit">Search</button>
-        </form>
-        <img src="templates/background_img/hotel-booking-reservation-travel-reception-concept.jpg" alt="Italian Trulli">
+        <div class = "hero-content">
+            <h1 class = "home-header"> Welcome!! </h1>
+            <form class ="home-searchbar" action = "{% url 'hotels' %}" method="get"> 
+                <label for="search-input"></label>
+                <input type="text" class="home-search-input" name="query" placeholder="Hotel Search..." tabindex = "0">
+                <button type="submit"><i class="fa fa-search" aria-hidden="true"></i></button>
+            </form>
+        </div>
     </section>
+
+    <section class = "hotel-grid">
+        {% for hotel in hotels%}
+            <div class = "hotel-card">
+                {% with image=hotel.hotel_image.first %}
+                    {% if image %}
+                        <img src="{{ image.image.url }}" alt="{{ hotel.name }}">
+                    {% endif %}
+                {% endwith %}
+                {% comment %} <img src = "{{hotel.hotel_image.url}}" alt = "{{hotel.name}}" style = "width:50px; height:50px;"> {% endcomment %}
+                <div class = "hotel-content"> 
+                    <div class = "hotel-header">
+                        <h3> {{hotel.name}} </h3>
+                        <span class="rating">★ {{ hotel.rating }}</span>
+                    </div>
+                    <p> {{hotel.city}}, {{hotel.state}} </p>
+                    
+                    <div class = "hotel-footer">
+                        <span class="price">${{ hotel.price_per_night }}/night</span>
+                        <a href="{% url 'hotel_details' hotel.slug %}" class="view">View Details</a>
+                    </div>
+                </div>
+            </div>
+        {% empty %}
+            <p> No hotels found </p>
+        {%endfor%}
+    </section>
+    
 {% endblock content %}
+
+
+{%block why_us%}
+        <section class="why-us">
+            <h2>Why Choose Us</h2>
+    
+            <div class="why-grid">
+                <div class="why-item">
+                    <i class="fa-solid fa-hotel"></i>
+                    <h4>Verified Hotels</h4>
+                    <p>Only trusted and reviewed properties.</p>
+                </div>
+    
+                <div class="why-item">
+                    <i class="fa-solid fa-tag"></i>
+                    <h4>Best Prices</h4>
+                    <p>No hidden fees, guaranteed.</p>
+                </div>
+    
+                <div class="why-item">
+                    <i class="fa-solid fa-lock"></i>
+                    <h4>Secure Booking</h4>
+                    <p>Your data is always protected.</p>
+                </div>
+    
+                <div class="why-item">
+                    <i class="fa-solid fa-headset"></i>
+                    <h4>24/7 Support</h4>
+                    <p>We’re here whenever you need us.</p>
+                </div>
+            </div>
+        </section>
+    {%endblock%}

@@ -1,61 +1,142 @@
-body {
+body,html {
     margin:0;
     padding:0;
-    display: flex;
-    flex-direction: column;
-    min-height: 100vh;
+    height: 100%
 }
 
-/*navbar*/
+.page {
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+}
+
+.content {
+    flex:1;
+}
+
+/* -------------------------------------------------------*/
+/* Navigation Bar */
+/*-------------------------------------------------------*/
 .navbar {
-    background-color: lightseagreen;
-    min-height: 100px;
+    background-color: darkgray;
+    min-height: 50px;
     height: auto;
 }
 
 .navbar-left{
     display: flex;
     gap:10px;
+    align-items: center;
 }
-
 
 .home, .hotel {
-    font-size: 70px;
+    font-size: 35px;
     display: flex;
+    color: #3a3a3a;
     text-decoration: none;
+    border-radius: 50px;
+    margin-top: 10px;
 }
 
-.searchbar {
-    display:flex;
-    justify-content: flex-end;
+/* .searchbar {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: white;
+    border-radius: 100px;
+    padding: 0.5rem;
+    box-shadow: 0 10px 10px 0 #d6d9d2;
+    height:auto;
+
+    overflow: hidden;
+    outline: 1px solid transparent;
+
+    height: 30px;
+    width: 30px;
+    max-width: 100%;
+    padding: 3px;
+
+    transition: width 0.4s, outline 0.4s;
+}
+
+.searchbar:focus-within {
+    width: 400px;
+    outline: 1px solid #2a2a2a
+}
+
+.searchbar-input{
+    color: #3a3a3a;
+    background-color: transparent;
+    flex:auto;
+    margin-inline: 1rem;
     border: none;
+    outline: none;
+    opacity: 0;
+    transition: opacity 0.4s;
 }
 
-.searchbar-icon {
-    font-size: 70px;
+.searchbar:focus-within .searchbar-input {
+    opacity: 1;
 }
+
+.searchbar button {
+    display:flex;
+    flex: none;
+    justify-content: center;
+    align-items: center;
+    background: #3a3a3a;
+    color: #fff;
+    border: none;
+    
+    cursor: pointer;
+    height: 30px;
+    width:30px;
+    border-radius: 50%;
+    aspect-ratio: 1;
+} */
 
 .authentication {
     display: flex;
     justify-content: flex-end;
-    margin-top: -70px;
+    margin-top: -40px;
     gap: 5px;
     margin-left: -40px;
 }
 
+.profile-hover{
+    position:relative;
+    display: inline-flex;
+    align-items: center;
+    gap: 7px;
+}
+
 .welcome-text{
-    font-family: "Open Sans", sans-serif;
-    font-optical-sizing: auto;
-    font-weight: 10;
+    font-family: "Goudy Bookletter 1911", serif;
+    font-weight: 400;
     font-style: normal;
-    font-variation-settings: "wdth" 100;
-    margin-top: 7px;
-    font-size:20px
+
+    position: absolute;
+    bottom: -35px;
+    right: 0;
+    background: #222;
+    color: #fff;
+    padding: 6px 10px;
+    border-radius: 6px;
+    font-size: 0.8rem;
+    opacity: 0;
+    visibility: hidden;
+    transition: opacity 0.3s ease;
+}
+
+.profile-hover:hover .welcome-text{
+    opacity:1;
+    visibility: visible;
 }
 
 .home-login, .home-register, .home-profile, .logout{
-    font-size:50px;
+    font-size:30px;
     text-decoration: none;
+    color: #3a3a3a
 }
 
 /* login.html*/
@@ -69,13 +150,14 @@ body {
     margin:10px
 }
 
+/* -------------------------------------------------------*/
 /* PROFILE PAGE */
+/*-------------------------------------------------------*/
 .profile-page {
-    font-family: "Open Sans", sans-serif;
-    font-optical-sizing: auto;
-    font-weight: 10;
+    font-family: "Goudy Bookletter 1911", serif;
+    font-weight: 400;
     font-style: normal;
-    font-variation-settings: "wdth" 100;
+
     border: 1px solid black;
     text-align: center;
     max-width: 800px;
@@ -86,6 +168,7 @@ body {
 .welcome-section{
     margin-bottom: 2rem;
 }
+
 .welcome-section p {
     font-size: 17px;
 }
@@ -135,22 +218,743 @@ body {
     text-decoration: none;
 }
 
-/* Home Page */
+
+/* -------------------------------------------------------*/
+/*Home Page*/
+/*-------------------------------------------------------*/
 .hero {
+    font-family: "Goudy Bookletter 1911", serif;
+    font-weight: 400;
+    font-style: normal;
+
     display:flex;
+    align-items: center;
     justify-content: center;
+    height:25vh;
+    background-image:
+        linear-gradient(
+            rgba(0,0,0,0.45),
+            rgba(0,0,0,0.45)
+        ),
+        url("../images/md-iftekharul-amin-pony-z_6UhseFjNg-unsplash.jpg");
+        
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+}
+
+.hero-content {
+    text-align: center;
+    color: white;
+    max-width: 700px;
+    padding: 1rem;
+}
+
+.home-header {
+    font-size: 2.5rem;
+    margin-bottom: 1.5rem;
+
+    font-family: "Goudy Bookletter 1911", serif;
+    font-weight: 400;
+    font-style: normal;
+}
+
+.home-searchbar {
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
+
+    background: white;
+    border-radius: 100px;
+    box-shadow: 0 5px 10px 0 #7c7d7c;
+    overflow: hidden;
+    outline: 1px solid transparent;
+
+    height: 30px;
+    width: 30px;
+    max-width: 100%;
+    margin-inline:auto;
+    padding: 3px;
+
+    transition: width 0.4s, outline 0.4s;
+}
+
+.home-searchbar:focus-within {
+    width: 400px;
+    outline: 1px solid #2a2a2a
+}
+
+.home-search-input{
+    color: #3a3a3a;
+    background-color: transparent;
+    flex:auto;
+    margin-inline: 1rem;
+    border: none;
+    outline: none;
+    opacity: 0;
+    transition: opacity 0.4s;
+}
+
+.home-searchbar:focus-within .home-search-input {
+    opacity: 1;
+}
+
+.home-searchbar button {
+    display:flex;
+    flex: none;
+    justify-content: center;
+    align-items: center;
+    background: #3a3a3a;
+    color: #fff;
+    border: none;
+    /* padding: 0.5rem 1rem; */
+    cursor: pointer;
+    height: 30px;
+    width:30px;
+    border-radius: 50%;
+    aspect-ratio: 1;
+}
+
+.hotel-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+    align-content: start;
+    gap: 24px;
+    padding: 40px 0;
+    height: 700px;
+}
+
+.hotel-card {
+    background: #fff;
+    border-radius: 12px;
+    overflow: hidden;
+    box-shadow: 0 8px 24px rgba(0,0,0,0.08);
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.hotel-card:hover {
+    transform: translateY(-6px);
+    box-shadow: 0 12px 32px rgba(0,0,0,0.12);
+}
+
+.hotel-card img {
+    width: 100%;
+    height: 180px;
+    object-fit: cover;
+}
+
+.hotel-content {
+    padding: 16px;
+}
+
+.hotel-header {
+    display: flex;
+    justify-content: space-between;
     align-items: center;
 }
 
-.content {
-    min-height: 90vh;
+.hotel-header h3 {
+    font-size: 1.1rem;
+    margin: 0;
+}
+
+.rating {
+    font-size: 0.9rem;
+    color: #f4b400;
+}
+
+.location {
+    color: #777;
+    font-size: 0.9rem;
+    margin: 6px 0 12px;
+}
+
+.hotel-footer {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.price {
+    font-weight: 600;
+}
+
+.view {
+    padding: 6px 14px;
+    background: #222;
+    color: white;
+    border-radius: 6px;
+    text-decoration: none;
+    font-size: 0.85rem;
+}
+
+.why-us {
+    padding: 10px 0 10px;
+    background: #f8f9fb;
+    text-align: center;
+    margin-bottom: 0px;
+}
+
+.why-grid {
+    display: flex;
+    gap: 24px;
+    justify-content: center;
+}
+
+.why-item h4 {
+    font-size: 0.95rem;
+}
+
+.why-item i {
+    font-size: 1.4rem;
+    color: #222;
+    margin-bottom: 2px;
+}
+
+.why-item p {
+    font-size: 0.8rem;
+    color: #666;
+}
+
+.footer{
+    text-align: center;
+    background-color: burlywood;
+    width: 100vw;
+    padding-top: 10px;
+    padding-bottom: 10px;
+    border: none;
+    outline: none;
+    margin:0;
 }
 
 .footer p{
-    flex:1;
-    text-align: center;
-    background-color: burlywood;
-    width: 100wh;
+    margin:0;
+}
+
+
+/* -----------------------
+   Hotel Detail
+--------------------------*/
+.hotel-detail {
+    font-family: "Goudy Bookletter 1911", serif;
+    font-weight: 400;
+    font-style: normal;
+
+    background-color: #fff;
+    margin: 3rem;
+    box-shadow: 0 5px 10px 0 #7c7d7c;
+    border-radius: 30px;
+
+    display:flex;
+    justify-content: space-between;
+}
+
+.hotel-detail-left {
+    width: 49.5%;
+    height:auto;
+    /* border: 1px solid black; */
+    background-color: rgb(240, 239, 239);
+    border: none;
+    border-radius: 30px;
+}
+
+.hotel-detail-header{
+    padding-left:1rem;
+}
+
+.hotel-detail-header h3{
+    font-size: 2rem;
+    margin-top: 1.4rem;
+    margin-bottom: 1rem;
+    font-weight: bolder;
+}
+
+.hotel-info {
+    display: flex;
+    gap: 2rem;
+}
+
+.info a{
+    color: #3a3a3a;;
+}
+
+.image-gallery{
+    margin-top: 0.7rem;
+}
+
+.hotel-image img{
+    width:100%;
+    height:98%;
+}
+
+.room-image {
+    width:100%;
+    height:10%;
+    overflow-x:auto;
+    display: flex;
+    gap: 1px;
+}
+
+.room-image img{
+    width: 15vh;
+    height: 15vh;
+}
+
+.room-image::-webkit-scrollbar{
+    display: none;
+}
+
+.thumbnail {
+    cursor: pointer;
+    opacity: 0.7;
+    transition: opacity 0.2s ease, transform 0.2s ease;
+}
+
+.thumbnail:hover {
+    opacity: 1;
+    transform: scale(1.03);
+}
+
+.thumbnail.active {
+    opacity: 1;
+    outline: 2px solid #0b7e6c;
+}
+
+
+.divider {
+    height: auto; 
+    width:98%;               
+    margin: 0.3rem;          
+}
+
+.description-text {
+    margin: 0.3rem 10rem 1rem 1rem;
+}
+
+.description-text h3{
+
+    font-size: 1.3rem;
+    margin-top: 0;
+    margin-bottom: 0.3rem;
+}
+
+.description-text p{
+    width:auto;
+    font-size: 15px;
+}
+
+.hotel-detail-right {
+    width:49.5%;
+    height:auto;
+
+    display: flex;
+    flex-direction: column;
+}
+
+.trust {
+    display:flex;
+    margin-left: 10px;
+    margin-top: 0.5rem;
+    justify-content: space-between;
+}
+
+.hotel-rating {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    padding:0;
+    margin:0;
+}
+
+.star-rating{
+    display:flex;
+    margin-bottom:-20px;
+    justify-content: flex-start;
+    margin-left:0.3rem;
+}
+
+.star-rating-icon {
+    font-size: 1.5rem;
+    color: black
+}
+
+.star-rating-stars {
+    position: relative;
+    display: inline-block;
+    font-size: 1.2rem;
+    color: #ccc;
+}
+
+.stars-front {
+    position: absolute;
+    top: 0;
+    left: 0;
+    white-space: nowrap;
+    overflow: hidden;
+    color: #0b7e6c;
+}
+
+.score-rating{
+    padding-top:1rem;
+    font-size: 20px;
+    font-weight: bolder;
+    margin-left: 0.5rem;
+}
+
+.price-date {
+    display: flex;
+}
+
+.pricing {
+    display: flex;
+    width: 6.5rem;
+}
+
+.pricing .from{
+    font-weight: bold;
+    font-size: 1rem;
+    display:flex;
+    align-items: center;
+    justify-content: center;
+    margin:0;
+    margin-right:0.5rem;
+}
+
+.pricing .start-pricing {
+    font-size: 2rem;
+    font-weight: bolder;
+    display:flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.date-selection{
+    border-radius: 5px;
+    width: 10rem;
+    height: 3rem;
+    background-color: darkcyan;
+    color: white;
+    margin: 1rem 1rem 2rem 0.5rem;
+    border: none;
+    display:flex;
+    align-items: center;
+    justify-content: center;
+    text-decoration: none;
+}
+
+.amenities {
+    margin-left:1rem;
+    margin-right:1rem; 
+    margin-bottom: 1.5rem;
+}
+
+.amenity-header {
+    padding:0;
+    font-size: 1.5rem;
+    margin:0.3rem;
+}
+
+.amenity-divider{
+    border: 0.5px solid lightgray;
+    width:auto;
+    margin-bottom: 10px;        
+}
+
+.amenity-items{
+    display: flex;
+    gap:10px;
+    flex-wrap: wrap;
+}
+
+.amenity-item {
+    display:flex;
+    justify-content: flex-start;
+    align-items: center;
+    background-color:  #fff9f9e8;
+    border-radius: 50px;
+    border: 1px solid black;
     padding: 10px;
-    border: 1px color black;
+    height: 3rem;
+    flex: 0 0 (33.33% - 10px);
+    box-sizing: border-box;
+}
+
+.amenity-item:hover {
+    background: #eef1f6;
+    transform: translateY(-2px);
+}
+
+.amenity-item i{
+    font-size: 23px;
+    margin-right: 5px;
+}
+
+.amenity-item span{
+    color: #3a3a3a
+}
+
+.overview{
+    margin-left:1rem;
+    margin-right:1rem;
+    margin-bottom: 1.5rem;
+}
+
+.overview-header{
+    padding:0;
+    font-size: 1.5rem;
+    margin:0.5rem;
+}
+
+.overview-divider{
+    border: 0.5px solid lightgray;
+    width:auto;
+    margin-bottom: 0.3px; 
+}
+
+.hotel-policies{
+    margin-top: 0.5rem;
+}
+
+.policy-odd{
+    display:grid;
+    grid-template-columns: 3.5rem 1fr;
+    gap: 6px 16px;
+    background: lightgrey;
+    padding: 0.5rem;
+}
+
+.policy-even{
+    display:grid;
+    grid-template-columns: 3.5rem 1fr;
+    gap: 6px 16px;
+    background: whitesmoke;
+    padding:0.5rem;
+}
+
+.policy-odd dt {
+    display:flex;
+    align-items: center;
+}
+
+.policy-even dt {
+    display:flex;
+    align-items: center;
+}
+
+.hotel-policies dt{
+    font-weight: bolder;
+}
+
+/*-----------------------------------------------
+    Room Section
+---------------------------------------------*/
+.room-section {
+    margin-left: 0.5rem;
+    margin-right: 0.5rem;
+}
+
+.room-section-header {
+    padding:0;
+    font-size: 1.5rem;
+    margin:0.5rem;
+}
+
+.room-divider{
+    border: 0.5px solid lightgray;
+    width:auto;
+    margin-bottom: 0.3px; 
+}
+
+.room-carousel {
+    margin-top: 1rem;
+    position: relative;
+    display: flex;
+    align-items: center;
+    padding-top: 1rem;
+    border-radius: 10px;
+}
+
+.room-viewpoint {
+    overflow: hidden;
+}
+
+.room-slides {
+    display:flex;
+    transition: transform 0.4s ease;
+}
+
+.room-slide {
+    display:flex;
+    flex-direction: column;
+    text-align: center;
+    min-width:100%;
+    height:50vh;
+    box-sizing: border-box;
+    overflow: hidden;
+}
+
+.room-slide img{
+    margin-left: 10%;
+    margin-right: 10%;
+    height: 15rem;
+    width: 80%;
+    max-width: 100%;
+    object-fit: cover;
+    border-radius: 8px;
+}
+
+.room-scroll{
+    flex: 1;
+    overflow-y: auto;
+    scroll-behavior: smooth;
+    margin-bottom: 0.7rem;
+}
+
+.room-scroll::-webkit-scrollbar{
+    display:none;
+}
+
+.nav-arrow{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    position: absolute;
+    cursor: pointer;
+    transform: translateY(-50%);
+
+    z-index: 10;
+    width:2rem;
+    height:2rem;
+    border-radius: 50%;
+    border: none;
+
+    opacity: 0.3;
+    transition: 
+        opacity 0.25s ease,
+        transform 0.2s ease,
+        background-color 0.2s ease;
+}
+
+.room-carousel:hover .nav-arrow {
+    opacity: 0.5;
+}
+
+.room-carousel:hover .nav-arrow:hover {
+    opacity: 1;
+}
+
+.nav-arrow i{
+    font-size: 1.5rem;
+    color: darkcyan
+}
+
+.nav-arrow.left {
+    left: 10px;
+}
+
+.nav-arrow.right {
+    right: 10px;
+}
+
+.nav-arrow.disabled {
+    opacity: 0.1;
+    pointer-events: none;
+}
+
+/*-----------------------------------------------
+    Room Information
+---------------------------------------------*/
+.room-scroll{
+    overflow-y: auto;
+    flex:1;
+    scroll-behavior: smooth;
+}
+
+.room-info {
+    background: #ffffff;
+    /* border-top: 1px solid #eee; */
+}
+
+.room-info-header {
+    justify-content: center;
+    align-items: center;
+    margin-bottom: 0;;
+}
+
+.room-type {
+    font-weight: bolder;
+    font-size: 1.5rem;
+    margin: 0rem;
+    padding:0;
+}
+
+.room-info-body h4{
+    margin: 0.3rem;
+    padding-right: 26rem;
+    font-size: 1.3rem;
+}
+
+.room-amenities-divider {
+    border: 0.5px solid lightgrey;
+    margin-bottom: 0.3px; 
+    margin-left:10%;
+    margin-right:10%;
+}
+
+.room-amenities-list{
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(10rem, 1fr));
+    gap: 1rem;
+    margin-top: 0.3rem;
+    margin-left:10%;
+    margin-right:10%;
+}
+
+.room-amenity-item{
+    display:flex;
+    justify-content: center;
+    align-items: center;
+
+    font-size: 1.2rem;
+    gap:0.3rem;
+    transition: background 0.2s ease, transform 0.2s ease;
+}
+
+.room-amenity-item i {
+    color: #28282866;
+}
+
+.room-info-footer {
+    display: flex;
+    justify-content: flex-end;
+    align-items: center;
+    /* background-color: rgb(221, 221, 221); */
+    position: sticky;
+    border-top: 1px solid #eee;
+
+    border-radius: 10px;
+    height:4rem;
+
+    bottom: 0;
+    gap:1rem;
+    margin-bottom: 0.3rem;
+}
+
+.room-price{
+    font-size: 1.5rem;
+}
+
+.btn-book{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-right:1rem;
+    border:transparent;
+    width:25%;
+    height:60%;
+    color:white;
+    background-color: darkcyan;
+    text-decoration: none;
+    border-radius: 50px;
+    box-sizing: border-box;
 }

@@ -57,7 +57,7 @@ def custom_login(request):
 def custom_logout(request):
 
     logout(request)
-    messages.success(request, "Successfully logout, redirect to home page")
+    messages.success(request, "")
     
     return redirect('home_page')
 

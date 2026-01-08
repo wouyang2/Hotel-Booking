@@ -1,0 +1,260 @@
+{% extends "base.html"%}
+
+{% block content%}
+<div class = "hotel-detail">
+    <div class = "hotel-detail-left">
+        <section class = "hotel-detail-header">
+            <h3 class = "hotel-name"> {{hotel.name}} </h3>
+
+            <div class = "hotel-info">
+                <div class = "info">
+                    <i class="fa-solid fa-map-location-dot"></i> <a
+                    href="https://www.google.com/maps/search/?api=1&query={{ hotel.address }}, {{ hotel.city }}, {{ hotel.state }}, {{ hotel.country }}"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    class="hotel-location"
+                    > Location </a>
+                </div>
+
+                <div class = 'info'>
+                    <i class="fa-solid fa-laptop-code"></i> <a href = {{hotel.webiste}} class = "hotel-website"> Visit Website </a>
+                </div>
+
+                <div class = "info">
+                    <i class="fa-solid fa-phone"></i> <a href = {{hotel.phone}}> {{hotel.phone}} </a>
+                </div>
+            </div>
+        </section>
+
+        <section class = "image-gallery">
+            <div class = "hotel-image">
+                        <img src = "{{hotel.hotel_image.all.1.image.url}}" alt = {{hotel.name}} id = "main-hotel-image">
+
+                {% comment %} replace this section with hotel view {% endcomment %} 
+            <div class = "room-image">  
+                <img src = "{{hotel.hotel_image.all.1.image.url}}" alt = {{hotel.name}} class = "thumbnail" onclick="ChangeMainImage(this)">
+                {% for room in rooms%}
+                    {% for image in room.room_image.all%}
+                        <img src = "{{image.image.url}}" alt = "{{room.room_type}}" class = "thumbnail" onclick="ChangeMainImage(this)">
+                    {%endfor%}
+                {%endfor%}
+            </div>
+
+            <hr class = "divider"> </hr>
+
+            <dl class = "description-text"> 
+                <h3> About this property </h3>
+                <p><strong>Comfortable Accommodations:</strong> Rooms feature [List amenities, e.g., air-conditioning, tea/coffee makers, and high-speed Wi-Fi]. Guests consistently praise the [e.g., modern decor/room cleanliness] and the [e.g., friendly/attentive] staff.</p>
+                <p><strong>Leisure Facilities:</strong> The hotel offers [List facilities, e.g., a fitness center and a rooftop pool]. Additional amenities include [e.g., free parking, an elevator, 24-hour front desk, and laundry services].</p>
+                <p><strong>Dining Options:</strong> A [List breakfast types, e.g., continental and buffet] breakfast is served daily featuring [e.g., fresh fruit, pastries, and hot coffee]. The on-site [e.g., bar/cafe] provides additional options for guests.</p>
+                <p><strong>Location and Attractions:</strong> Located in [City/Area], the hotel is [Distance] from [Major Airport]. Nearby attractions include [Attraction 1] ([Distance]), [Attraction 2] ([Distance]), and [Attraction 3] ([Distance]).</p>
+            </dl>
+        </section>
+    </div>
+
+    <div class ="hotel-detail-right">
+
+        <section class = "trust">
+            <div class = "hotel-rating">
+                <div class = "star-rating">
+                    <div class = "star-rating-icon"><i class="fa-solid fa-book-open"></i> </div>
+                    <div class="star-rating-stars">
+                        <div class="stars-back">★★★★★</div>
+                        <div class="stars-front" style="width: {{rating_percent}}%">★★★★★</div>
+                    </div>
+                </div>
+                <div class = "score-rating"> <strong> Rating: {{hotel.rating}} of out 5 </strong></div>
+            </div>
+
+            <div class = "price-date">
+                <div class = "pricing">
+                    <div class = 'from'> From* </div>
+                    <div class = 'start-pricing'> $100{{hotel.price_per_night}}</div>
+                </div>
+
+                <a href = "#" class = "date-selection"> Select Dates </a>
+            </div>
+        </section>
+
+        <div class = "section-divider"> </div>
+
+
+        {% comment %} Amenity Section {% endcomment %}
+        <section class = "amenities">
+            <h3  class = "amenity-header"> Amenities </h3>
+            <div class = 'amenity-divider'> </div>
+            <div class = "amenity-items"> 
+                <div class = 'amenity-item'>
+                    <div class = "swimming-pool"> 
+                        <i class="fa-solid fa-person-swimming"></i>
+                        <span class ="icon-text"> Indoor/Outdoor Swimming Pool </span>
+                    </div>
+                </div>
+
+                <div class = 'amenity-item'>
+                    <div class = "smoking-room"> 
+                        <i class="fa-solid fa-smoking"></i>
+                        <span class ="icon-text"> Smoking Room</span>
+                    </div>
+                </div>
+
+                <div class = 'amenity-item'>
+                    <div class = "Gym"> 
+                        <i class="fa-solid fa-dumbbell"></i>
+                        <span class ="icon-text"> Gym </span>
+                    </div>
+                </div>
+
+                <div class = 'amenity-item'>
+                    <div class = "Parking"> 
+                        <i class="fa-solid fa-square-parking"></i>
+                        <span class ="icon-text"> Free Parking </span>
+                    </div>
+                </div>
+
+                <div class = 'amenity-item'>
+                    <div class = "WiFi"> 
+                        <i class="fa-solid fa-wifi"></i>
+                        <span class ="icon-text"> WiFi </span>
+                    </div>
+                </div>
+
+                <div class = 'amenity-item'>
+                    <div class = "laundry"> 
+                        <i class="fa-solid fa-shirt"></i>
+                        <span clas = 'icon-text'> Laundry </span>
+                    </div>
+                </div>
+                
+                <div class = 'amenity-item'>
+                    <div class = "pet"> 
+                        <i class="fa-solid fa-cat"></i>
+                        <span clas = 'icon-text'> Pet Friendly </span>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <div class = "section-divider"> </div>
+
+        {% comment %} Overview Section {% endcomment %}
+        <section class = 'overview'> 
+            <h3 class ='overview-header'> Overview </h3>
+            <div class = 'overview-divider'> </div>
+            <dl class = 'hotel-policies'> 
+
+                <div class = 'policy-odd'>
+                    <dt>Check-in</dt>
+                    <dd>4:00 PM</dd>
+                </div>
+
+                <div class = 'policy-even'>
+                    <dt>Check-out</dt>
+                    <dd>11:00 AM</dd>
+                </div>
+
+                <div class = 'policy-odd'>
+                    <dt>Currency</dt>
+                    <dd>US Dollar</dd>
+                </div>
+
+                <div class = 'policy-even'>
+                    <dt>Smoking</dt>
+                    <dd>A fee of up to 250 USD will be assessed for smoking in a non-smoking room, including room balconies. Please ask the Front Desk for locations of designated outdoor smoking areas.</dd>
+                </div>
+
+                <div class = 'policy-odd'>
+                    <dt>Parking</dt>
+                    <dd>Free Parking</dd>
+                </div>
+
+                <div class = 'policy-even'>
+                    <dt>Pet</dt>
+                    <dd>Pet Friendly with Leash</dd>
+                </div>
+                
+            </dl> 
+        </section>
+
+        {% comment %} Room Section {% endcomment %}
+        <section class = "room-section">
+            <h3 class = "room-section-header"> Rooms </h3>
+            <div class = "room-divider"> </div>
+
+            <div class = "room-carousel">
+                <button class = "nav-arrow left" onclick = "Prev()"> <i class="fa-solid fa-circle-chevron-left"></i> </button>
+
+                <div class = "room-viewpoint">
+                    <div class ="room-slides"> 
+                        {% for room_type, rooms in room_type_map.items%}
+
+                            <div class = "room-slide">
+
+                                <div class = "room-scroll">
+                                    <img src = "{{rooms.0.room_image.first.image.url}}" alt = "{{room.room_type}}">
+
+                                    <div class = "room-info">
+
+                                        <div class = "room-info-header"> 
+                                        <h4 class = "room-type">{{rooms.0.room_type}} </h4>
+                                        {% comment %} <div class = "capacity"> 
+                                        </div> {% endcomment %}
+                                        </div>
+
+                                        <div class = "room-info-body"> 
+                                            <h4>Amenities</h4>
+                                            <div class = "room-amenities-divider"> </div>
+                                            <div class ="room-amenities-list">
+                                                {%for label, icon in rooms.0.get_amenities%}  
+                                                    <div class = "room-amenity-item">
+                                                        <i class = "{{icon}}"> </i>
+                                                        <span> {{label}} </span>
+                                                    </div>
+                                                {%endfor%}
+
+                                                <div class = "room-amenity-item">
+                                                    <i class="fa-solid fa-cat"></i>
+                                                    <span clas = 'icon-text'> Pet Friendly </span>
+                                                </div> 
+                                                <div class = "room-amenity-item">
+                                                    <i class="fa-solid fa-cat"></i>
+                                                    <span clas = 'icon-text'> Pet Friendly </span>
+                                                </div> 
+                                                <div class = "room-amenity-item">
+                                                    <i class="fa-solid fa-cat"></i>
+                                                    <span clas = 'icon-text'> Pet Friendly </span>
+                                                </div> 
+                                                <div class = "room-amenity-item">
+                                                    <i class="fa-solid fa-cat"></i>
+                                                    <span clas = 'icon-text'> Pet Friendly </span>
+                                                </div> 
+
+                                                
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="room-info-footer">
+                                    <div class="room-price">
+                                        <span class="price-amount">${{ rooms.0.price_per_night }}</span>
+                                        <span class="price-unit">/ Night</span>
+                                    </div>
+                                    
+                                    <a href="#" class="btn-book">Book Now</a>
+                                </div>
+                            </div>
+                        {%endfor%}
+                    </div>
+                </div>
+
+                <button class = "nav-arrow right" onclick = "Next()"> <i class="fa-solid fa-circle-chevron-right"></i> </button>
+            </div>
+        </section>
+
+    </div>
+
+
+</div>
+
+{% endblock%}
