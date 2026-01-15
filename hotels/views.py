@@ -1,9 +1,10 @@
 from django.shortcuts import render, get_object_or_404
 from django.http import HttpResponse
 from hotels.models import Hotel
-from django.db.models import Count, Max, Min
+from django.db.models import Count, Max, Min, Q
 from django.core.paginator import Paginator
 from collections import defaultdict
+
 
 # Create your views here.
 
@@ -52,14 +53,54 @@ def hotel_list(request):
 
     hotels = Hotel.objects.prefetch_related('hotel_room').all()
 
-    # Filtering
-    city = request.GET.get('city')
-    rating = request.GET.get('rating')
+    # Search
+    q = request.GET.get("q")
+    if q:
+        hotels = hotels.filter(Q(name_icontains=q) | Q(city_icontain = q))
 
+    # Price filtering 
+    min_price = request.GET.get('min_price')
+    max_price = request.GET.get('max_price')
+
+    if min_price:
+        hotels = hotels.filter(price_per_night_gte = min_price)
+
+    if max_price:
+        hotels = hotels.filter(price_per_night_lte = max_price)
+
+
+    # Filter by city 
+    city = request.GET.get('city')
     if city:
         hotels = hotels.filter(city_icontain=city)
+
+    # Filter by rating
+    rating = request.GET.get('rating')
     if rating:
         hotels = hotels.filter(rating_icontain = rating)
+    
+    # Amenities
+    if request.GET.get("wifi"):
+        hotels = hotels.filter(wifi=True)
+    if request.GET.get('parking'):
+        hotels = hotels.filter(parking=True)
+    if request.GET.get('pool'):
+        hotels = hotels.filter(parking=True)
+    if request.GET.get('gym'):
+        hotels = hotels.filter(gym=True)
+    if request.GET.get('laundry'):
+        hotels = hotels.filter(laundry = True)
+
+    # Sorting
+    sort = request.GET.get('sort')
+    print("sort: ",sort)
+
+    if (sort == "price_asc"):
+        hotels = hotels.order_by('price_per_night')
+    if (sort == "price_dec"):
+        hotels = hotels.order_by('-price_per_night')
+    if sort == 'rating':
+        hotels = hotels.order_by('-rating')
 
     # Pagination
     p = Paginator(hotels, 10)
@@ -68,6 +109,7 @@ def hotel_list(request):
 
     context = {
         'page_obj' : page_obj,
+        'hotel_count' : hotels.count()
     }
     return render (request, "hotels/hotel_list.html", context)
 

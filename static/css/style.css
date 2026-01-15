@@ -1,7 +1,11 @@
 body,html {
     margin:0;
     padding:0;
-    height: 100%
+    height: 100%;
+
+    font-family: "Goudy Bookletter 1911", serif;
+    font-weight: 400;
+    font-style: normal;
 }
 
 .page {
@@ -18,8 +22,11 @@ body,html {
 /* Navigation Bar */
 /*-------------------------------------------------------*/
 .navbar {
-    background-color: darkgray;
-    min-height: 50px;
+    /* background-color: darkgray; */
+    /* background-image: 
+    radial-gradient(at 0% 100%, rgba(0, 109, 53, 0.922) 10px, 60%),
+    radial-gradient(at 100% 0%, rgba(61, 201, 134, 0.134) 10px, 60%); */
+    min-height: 3.3rem;
     height: auto;
 }
 
@@ -36,78 +43,6 @@ body,html {
     text-decoration: none;
     border-radius: 50px;
     margin-top: 10px;
-}
-
-/* .searchbar {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    background: white;
-    border-radius: 100px;
-    padding: 0.5rem;
-    box-shadow: 0 10px 10px 0 #d6d9d2;
-    height:auto;
-
-    overflow: hidden;
-    outline: 1px solid transparent;
-
-    height: 30px;
-    width: 30px;
-    max-width: 100%;
-    padding: 3px;
-
-    transition: width 0.4s, outline 0.4s;
-}
-
-.searchbar:focus-within {
-    width: 400px;
-    outline: 1px solid #2a2a2a
-}
-
-.searchbar-input{
-    color: #3a3a3a;
-    background-color: transparent;
-    flex:auto;
-    margin-inline: 1rem;
-    border: none;
-    outline: none;
-    opacity: 0;
-    transition: opacity 0.4s;
-}
-
-.searchbar:focus-within .searchbar-input {
-    opacity: 1;
-}
-
-.searchbar button {
-    display:flex;
-    flex: none;
-    justify-content: center;
-    align-items: center;
-    background: #3a3a3a;
-    color: #fff;
-    border: none;
-    
-    cursor: pointer;
-    height: 30px;
-    width:30px;
-    border-radius: 50%;
-    aspect-ratio: 1;
-} */
-
-.authentication {
-    display: flex;
-    justify-content: flex-end;
-    margin-top: -40px;
-    gap: 5px;
-    margin-left: -40px;
-}
-
-.profile-hover{
-    position:relative;
-    display: inline-flex;
-    align-items: center;
-    gap: 7px;
 }
 
 .welcome-text{
@@ -128,6 +63,86 @@ body,html {
     transition: opacity 0.3s ease;
 }
 
+/*------------------------------
+   Message Section
+   -------------------------*/
+
+.message-section{
+    position:fixed;
+
+    top: 5rem;
+    right: 0.7rem;
+
+    z-index:999;
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+}
+
+.toast {
+    position: fixed;
+
+    min-width: 10rem;
+    height: auto;
+
+    right:0.7rem;
+    top:5rem;
+
+    padding: 1rem;
+    border-radius: 10px;
+    font-size: 1.3rem;
+    background:  rgb(169, 1, 1);
+    color: white;
+
+    box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+
+    opacity:0;
+    transform: translateX(120%);
+    transition: opacity 0.4s ease, transform 0.4s ease;
+
+    /* animation: slideIn 0.5s ease forwards; */
+}
+
+.toast.show{
+    opacity: 1;
+    transform: translateX(0);
+}
+
+.toast::after{
+    content: "";
+    position: absolute;
+
+    right:-0.5rem;
+    top: 1.4rem;
+
+    width:1rem;
+    height:1rem;
+
+    transform: rotate(45deg);
+    background-color: #000;
+
+    border-radius: 2px;
+}
+
+/*------------------------
+ Profile Login Logout Register
+-------------------------*/
+
+.authentication {
+    display: flex;
+    justify-content: flex-end;
+    margin-top: -40px;
+    gap: 5px;
+    margin-left: -40px;
+}
+
+.profile-hover{
+    position:relative;
+    display: inline-flex;
+    align-items: center;
+    gap: 7px;
+}
+
 .profile-hover:hover .welcome-text{
     opacity:1;
     visibility: visible;
@@ -137,17 +152,6 @@ body,html {
     font-size:30px;
     text-decoration: none;
     color: #3a3a3a
-}
-
-/* login.html*/
-.login-compliment-section {
-    gap: 20px;
-    text-decoration: none;
-}
-
-.register-link, .forget-link{
-    text-decoration: none;
-    margin:10px
 }
 
 /* -------------------------------------------------------*/
@@ -218,6 +222,364 @@ body,html {
     text-decoration: none;
 }
 
+/*-------------------------------------------------------*/
+/*Register Page*/
+/*-------------------------------------------------------*/
+
+.content.register-bg {
+    background-color: rgb(238, 238, 238);
+}
+
+.register-page{
+    margin:2rem 2rem 0 2rem;
+    border-radius: 30px;
+    display: flex;
+    justify-content: space-between;
+    overflow: hidden;
+    height: 90%;
+    box-shadow: 0 0.5rem 0.5rem 0 #7c7d7c;
+
+    font-family: "Goudy Bookletter 1911", serif;
+    font-weight: 400;
+    font-style: normal;
+}
+
+.user-register{
+
+    background-image: 
+    radial-gradient(at 0% 100%, rgb(224, 255, 251) 0px, transparent 50%),
+    radial-gradient(at 100% 0%, rgb(255, 224, 224) 0px, transparent 50%);
+    
+    background-color: white;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    border: transparent;
+    width:60%;
+    
+}
+
+.user-register h1{
+    font-size: 2.3rem;
+    font-weight: bolder;
+    margin-top: 0.3rem;
+    margin-bottom: 2rem;
+    color: rgb(55, 55, 55);
+}
+
+.register-with-validation{
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+
+.reg-field{
+    display: flex;
+    position: relative;
+    justify-content: center;
+    font-size: 1.7rem;
+    margin:0.5rem;
+}
+
+.help-text {
+    position: absolute;
+    top: calc(100% + 7px);
+    left:0;
+
+    width: 10rem;
+    padding: 12px 14px;
+
+    background: white;
+    color: #242424;
+    border-radius: 10px;
+
+    font-size: 0.85rem;
+    line-height: 1.4;
+
+    box-shadow: 0 10px 30px rgba(0,0,0,0.25);
+
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 0.2s ease, transform 0.2s ease;
+    transform: translateY(-1rem);
+    z-index: 999;
+}
+
+.reg-field input:focus ~ .help-text {
+    opacity: 1;
+    visibility: visible;
+    transform: translateY(0);
+}
+
+.help-text::before {
+    content: "";
+    position: absolute;
+
+    top: -0.36rem;
+    left: 10rem;
+
+    width: 12px;
+    height: 12px;
+
+    background: #1f2933;
+    transform: rotate(45deg);
+
+    border-radius: 2px;
+}
+
+.help-list{
+    margin:0;
+    padding: 0;
+    padding-left: 1rem;
+}
+
+.valid-password {
+    color: #0b7e6c;
+}
+
+.invalid-password {
+   color:rgb(169, 1, 1);
+}
+
+.help-text-password2{
+
+    position: absolute;
+
+    top:calc(100% + 7px);
+    right: -5rem;
+
+    font-size: 0.85rem;
+    border-radius: 10px;
+    box-shadow: 0 0 3px rgba(0,0,0,0.25);
+    padding: 0.85rem 1rem;
+    width:auto;
+    background: white;
+    opacity: 0;
+
+    z-index:999;
+
+    transition: opacity 0.2s ease, transform 0.2s ease;
+    pointer-events: none;
+    transform: translateY(-1rem);
+}
+
+.help-text-password2::before{
+
+    content: "";
+    position: absolute;
+
+    top: -0.36rem;
+
+    width:0.7rem;
+    height:0.7rem;
+    background: black;
+
+    transform: rotate(45deg);
+    border-radius: 2px;
+}
+
+.reg-field input:focus ~ .help-text-password2{
+    opacity: 1;
+    visibility: visible;
+    transform: translateY(0);
+}
+
+.help-text-password2.valid{
+    color:#0b7e6c;
+}
+
+.help-text-password2.invalid {
+    color: rgb(169, 1, 1);
+}
+
+.form-input {
+    font-family: "Goudy Bookletter 1911", serif;
+    font-weight: 400;
+    font-style: normal;
+
+    border-radius: 10px;
+    width: 15rem;
+    margin-left: 0.5rem;
+    border: transparent;
+    box-shadow: 0 0 3px rgb(224, 224, 224);
+
+    font-size: 1rem;
+}
+
+.register-image{
+    width:40%;
+    background-image:
+        url("../images/register.jpg");
+        
+    background-size: cover;
+    background-position: 60% 50%;
+    background-repeat: no-repeat;
+}
+
+.form-submit{
+    font-family: "Goudy Bookletter 1911", serif;
+    font-weight: 400;
+    font-style: normal;
+
+    height:2.7rem;
+    width:20rem;
+    border-radius: 10px;
+    background-color: darkcyan;
+    border: transparent;
+    font-size: 1rem;
+    color: white;
+    box-shadow: 0 0.3rem 0.5rem 0 darkcyan;
+    margin-top: 3rem;
+}
+
+.form-submit:hover{
+    background-color: rgba(0, 139, 139, 0.563);
+}
+
+/* -------------------------------------------------------*/
+/*Login Page*/
+/*-------------------------------------------------------*/
+
+.login-bg{
+
+   background-color:rgb(238, 238, 238);
+
+}
+
+.login-container{
+    background-color: white;
+
+    height: 90%;
+    margin:2rem;
+    border-radius: 30px;
+}
+
+.login-page{
+
+    font-family: "Goudy Bookletter 1911", serif;
+    font-weight: 400;
+    font-style: normal;
+
+    display: flex;
+    justify-content: space-between;
+    height:100%;
+    border-radius: 30px;
+
+    background-color: #f8faff;
+    background-image: 
+        radial-gradient(at 0% 100%, hsla(225, 100%, 94%, 1) 0px, transparent 50%), /* Light Blue top-right */
+        radial-gradient(at 100% 0%, hsla(268, 100%, 94%, 1) 0px, transparent 50%); /* Light Lavender bottom-left */
+
+}
+
+.login-image{
+    background-image: 
+        url('../images/manuel-moreno-DGa0LQ0yDPc-unsplash.jpg');
+    background-size: cover;
+    background-position: center;
+
+    margin: 1.2rem;
+    width:50%;
+    border-radius: 30px;
+}
+
+.login-section{
+    display: flex;
+    flex-direction: column;
+
+    justify-content: center;
+    align-items: center;
+
+    width:50%;
+    color:rgb(55, 55, 55);
+
+    margin: 1rem;
+
+    position: relative;
+}
+
+.login-section h1{
+    font-size: 2.5rem;
+    margin-bottom: 0.7rem;
+}
+
+.sub-text{
+    margin: 0 0 1.7rem 0;
+    font-size: 1.2rem;
+}
+
+.error-box {
+    position: absolute;
+    top: 170px;
+    left: 0;
+    right: 0;
+    text-align: center;
+    visibility: hidden;
+}
+
+.login-username{
+    margin: 1rem 0 1rem 0;
+}
+
+.login-password{
+    margin: 1rem 0 1rem 0;
+}
+
+.login-username input, .login-password input{
+
+    font-family: "Goudy Bookletter 1911", serif;
+    font-weight: 400;
+    font-style: normal;
+
+    width: 25vw;
+    height: 3rem;
+    border-radius: 10px;
+    outline: none;
+    border: transparent;
+
+    background-color: rgb(255, 255, 255);
+    box-shadow: 0 0 3px rgb(202, 210, 232);
+    box-sizing: border-box;
+
+    font-size: 1.3rem;
+}
+
+.login-compliment-section{
+    display: flex ;
+    flex-direction: column;
+    align-items: flex-end;
+}
+
+.register-link, .forget-link{
+    color: rgb(106, 106, 106);
+    text-decoration: none;
+}
+
+.login-btn{
+
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-top: 2rem;
+}
+
+.login-btn button{
+
+    font-family: "Goudy Bookletter 1911", serif;
+    font-weight: 400;
+    font-style: normal;
+
+    background-color: darkcyan;
+    width: 25vw;
+    height: 3rem;
+    border-radius: 10px;
+    font-size: 1rem;
+    color: white;
+    border: transparent;
+    box-shadow: 0 0 3px darkcyan;
+}
 
 /* -------------------------------------------------------*/
 /*Home Page*/
@@ -236,7 +598,7 @@ body,html {
             rgba(0,0,0,0.45),
             rgba(0,0,0,0.45)
         ),
-        url("../images/md-iftekharul-amin-pony-z_6UhseFjNg-unsplash.jpg");
+        url("../images/homepage.jpg");
         
     background-size: cover;
     background-position: center;

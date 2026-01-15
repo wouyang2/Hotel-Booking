@@ -5,7 +5,7 @@
 <head>
     <meta name="viewport" content="width=device-width, initial-scale=1.0"> </meta>
     <title> {% block title %}Hotel Booking{% endblock %} </title>
-    <link rel="stylesheet" href="cdnjs.cloudflare.com" crossorigin="anonymous" referrerpolicy="no-referrer" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com" crossorigin="anonymous" referrerpolicy="no-referrer" />
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Goudy+Bookletter+1911&family=Open+Sans:ital,wght@0,300..800;1,300..800&display=swap" rel="stylesheet">
@@ -13,6 +13,9 @@
     <script src="https://kit.fontawesome.com/3b9aa2b6b7.js" crossorigin="anonymous"></script>
     <script src="{% static 'js/room_carousel.js' %}"></script>
     <script src ="{% static "js/main_image.js" %}"></script>
+    <script src = "{% static "js/register.js" %}"> </script>
+    <script src = "{% static "js/message.js" %}"> </script>
+    <script src = "{% static "js/login.js" %}"> </script>
 </head>
 
 <body class ="page">
@@ -20,22 +23,17 @@
     {%include 'includes/navbar.html'%}
 
     <!-- django message section  -->
-    <div class= 'message-section'>{%include 'includes/messages.html'%} </div>
-    
-    <!-- main content section -->
-    <main class = "content"> 
-        {% block content %}
+    {%include 'includes/messages.html'%}
 
-        {% endblock content %}
-    </main>
+    <div class="content {% block page_class %}{% endblock %}">
+        {% block content %}{% endblock %}
+    </div>
 
-    {{page_obj}}
     {%block why_us%}{%endblock%}
 
     <footer class="footer">
         <p>&copy; 2025 My Website</p>
     </footer>
 
-    <script class = "js"></script>
 </body>
 </html>

@@ -1,7 +1,7 @@
 {%if messages%}
-    <div class="message">
+    <div class="message-section">
         {% for message in messages %}
-            <div class="message {{ message.tags }}">
+            <div class="toast toast-{{ message.tags }}">
                 {{ message }}
             </div>
         {% endfor %}

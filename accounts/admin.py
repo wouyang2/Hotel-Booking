@@ -15,12 +15,12 @@ class UserAdmin(UserAdmin):
         'is_customer',
         'is_staff',
         'is_hotel_manager',
-        'email_verif',
+        'email_verified',
         'created_at'
     )
 
      # Enable filtering in the right sidebar
-    list_filter = ('date_of_birth', 'is_customer', 'is_hotel_manager', 'email_verif', 'created_at')
+    list_filter = ('is_customer', 'is_hotel_manager', 'email_verified', 'created_at', 'username', 'email')
 
     # Enable search functionality
     search_fields = ('is_customer', 'is_hotel_manager') 
@@ -29,9 +29,9 @@ class UserAdmin(UserAdmin):
     readonly_fields = ('created_at', 'updated_at')
 
     fieldsets = UserAdmin.fieldsets + (
-        ('Additional Info', {'fields': ('phone_number', 'date_of_birth', 'address', 
+        ('Additional Info', {'fields': ('phone', 'date_of_birth', 'address', 
                                        'is_customer', 'is_hotel_manager', 
-                                       'profile_picture', 'email_verified')}),
+                                       'profile_pic', 'email_verified')}),
     )
 
 
