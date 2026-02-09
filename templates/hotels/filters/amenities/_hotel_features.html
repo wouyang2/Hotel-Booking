@@ -1,0 +1,10 @@
+{% comment %} _hotel_features.html {% endcomment %}
+<div id = "amenity-input" hidden>
+    <input type = "checkbox" value = "connecting_rooms" id = "connecting_rooms" name = "amenities" {% if "connecting_rooms" in amenities %}checked{% endif %}>
+    <input type = "checkbox" value = "pet_friendly" id = "pet_friendly" name = "amenities" {% if "pet_friendly" in amenities %}checked{% endif %}> 
+    <input type = "checkbox" value = "no_pets" id = "no_pets" name = "amenities" {% if "no_pets" in amenities %}checked{% endif %}>  
+    <input type = "checkbox" value = "smoke_free" id = "smoke_free" name = "amenities" {% if "smoke_free" in amenities %}checked{% endif %}>  
+    <input type = "checkbox" value = "streaming_entertainment" id = "streaming_entertainment" name = "amenities" {% if "streaming_entertainment" in amenities %}checked{% endif %}> 
+    <input type = "checkbox" value = "inroom_kitchen" id = "inroom_kitchen" name = "amenities" {% if "inroom_kitchen" in amenities %}checked{% endif %}>
+    <input type = "checkbox" value = "lounge" id = "lounge" name = "amenities" {% if "lounge" in amenities %}checked{% endif %}>
+</div>

@@ -1,0 +1,6 @@
+<div id - "amenities-input" hidden>
+    <input type = "checkbox" value = 'indoor-pool' id = 'indoor-pool' name = "amenities" {% if "indoor-pool" in amenities %}checked{% endif %}>
+    <input type = "checkbox" value = "outdoor-pool" id = "outdoor-pool" name = "amenities" {% if "outdoor-pool" in amenities %}checked{% endif %}> 
+    <input type = "checkbox" value = "gym" id = "gym" name = "amenities" {% if "gym" in amenities %}checked{% endif %}>
+    <input type = "checkbox" value = "spa" id = "spa" name = "amenities" {% if "spa" in amenities %}checked{% endif %}> 
+</div>

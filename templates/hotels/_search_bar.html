@@ -1,0 +1,17 @@
+<section class = "destination-date"> 
+    <div class = "search-field destination"> 
+        <div class = "destination-icon"> <i class="fa-solid fa-magnifying-glass"></i> </div>  
+        <input type = 'text' name = 'location' placeholder = 'destination' autocomplate = 'on' class= 'location-input' value = {{location | default:''}}>
+    </div>
+
+    <div class = "search-field checkin-contianer">
+        <input class = 'checkin-input' type = 'date' min = {{today}} value = {{checkin|default:''}} id = "checkin"> 
+    </div>
+
+    <div class = "search-field checkout-contianer">
+        <input class = 'checkout-input' type = 'date' min = {{today}} value = {{checkout|default:''}} id = "checkout"> 
+    </div>
+
+    <button type = 'submit' id = "update-hotels"> Update </button>
+
+</section>

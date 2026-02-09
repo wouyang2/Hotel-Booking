@@ -1,0 +1,6 @@
+<div id - "amenities-input" hidden>
+    <input type = "checkbox" value = 'breakfast' id = 'breakfast' name = "amenities" {% if "breakfast" in amenities %}checked{% endif %}>
+    <input type = "checkbox" value = "reception" id = "reception" name = "amenities" {% if "reception" in amenities %}checked{% endif %}> 
+    <input type = "checkbox" value = "onsite-restaurant" id = "onsite-restaurant" name = "amenities" {% if "onsite-restaurant" in amenities %}checked{% endif %}>
+    <input type = "checkbox" value = "room_service" id = "room_service" name = "amenities" {% if "room_service" in amenities %}checked{% endif %}> 
+</div>

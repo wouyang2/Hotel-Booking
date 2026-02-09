@@ -4,6 +4,7 @@ from hotels.models import Hotel
 from django.db.models import Count, Max, Min, Q
 from django.core.paginator import Paginator
 from collections import defaultdict
+from django.contrib import messages
 
 
 # Create your views here.
@@ -51,77 +52,102 @@ def hotel_list(request):
     template_name = 'hotels/hotel_list.html'
     """
 
-    hotels = Hotel.objects.prefetch_related('hotel_room').all()
+    hotels = (
+        Hotel.objects
+        .prefetch_related("hotel_room")
+        .annotate(min_price=Min("hotel_room__price_per_night"))
+        .annotate(max_price=Max("hotel_room__price_per_night"))
+    )
 
     # Search
     q = request.GET.get("q")
     if q:
-        hotels = hotels.filter(Q(name_icontains=q) | Q(city_icontain = q))
+        hotels = hotels.filter(Q(name__icontains=q) | Q(city__icontains = q))
+
+    # location 
+    location = request.GET.get('location')
+    if location:  
+        hotels = hotels.filter(Q(city__icontains = location) | Q(country__icontains = location))
+
+    # Check in/out date
+    checkin = request.GET.get('checkin')
+    checkout = request.GET.get('checkout')
+
+    if checkin and checkout:
+        if checkin > checkout:
+            messages.error(request, "Check-out date must be after check-in.")
 
     # Price filtering 
     min_price = request.GET.get('min_price')
     max_price = request.GET.get('max_price')
 
     if min_price:
-        hotels = hotels.filter(price_per_night_gte = min_price)
+        hotels = hotels.filter(hotel_room__price_per_night__gte = min_price)
 
     if max_price:
-        hotels = hotels.filter(price_per_night_lte = max_price)
-
-
-    # Filter by city 
-    city = request.GET.get('city')
-    if city:
-        hotels = hotels.filter(city_icontain=city)
+        hotels = hotels.filter(hotel_room__price_per_night__lte = max_price)
 
     # Filter by rating
     rating = request.GET.get('rating')
     if rating:
-        hotels = hotels.filter(rating_icontain = rating)
+        hotels = hotels.filter(rating__gte = int(rating))
     
     # Amenities
-    if request.GET.get("wifi"):
-        hotels = hotels.filter(wifi=True)
-    if request.GET.get('parking'):
-        hotels = hotels.filter(parking=True)
-    if request.GET.get('pool'):
-        hotels = hotels.filter(parking=True)
-    if request.GET.get('gym'):
-        hotels = hotels.filter(gym=True)
-    if request.GET.get('laundry'):
-        hotels = hotels.filter(laundry = True)
+    amenities = request.GET.getlist("amenities")
+
+    Amenity_Field_Map = {
+        'wifi' : 'wifi',
+        "parking": "parking",
+        "indoor_pool": "indoor_pool",
+        "outdoor_pool" : "outdoor_pool",
+        "gym": "gym",
+        "laundry": "laundry",
+        "breakfast": "free_breakfast"
+    }
+
+    for amenity in amenities:
+        field = Amenity_Field_Map.get(amenity) 
+        if field:
+            hotels = hotels.filter(**{field: True})
+
 
     # Sorting
-    sort = request.GET.get('sort')
-    print("sort: ",sort)
+    sort = request.GET.get('sorting', "")
 
     if (sort == "price_asc"):
-        hotels = hotels.order_by('price_per_night')
-    if (sort == "price_dec"):
-        hotels = hotels.order_by('-price_per_night')
-    if sort == 'rating':
+        hotels = hotels.order_by('min_price')
+    if (sort == "price_desc"):
+        hotels = hotels.order_by('-min_price')
+    if sort == 'rating_asc':
+        hotels = hotels.order_by('rating')
+    if sort == "rating_desc":
         hotels = hotels.order_by('-rating')
 
     # Pagination
-    p = Paginator(hotels, 10)
+    p = Paginator(hotels, 4)
     page_number = request.GET.get('page')
     page_obj = p.get_page(page_number)
 
     context = {
         'page_obj' : page_obj,
-        'hotel_count' : hotels.count()
+        'hotel_count' : hotels.count(),
+        'location': location,
+        'checkin': checkin,
+        'checkout': checkout,
+        'amenities' : amenities,
     }
+
+    if request.htmx:
+        return render(request, "hotels/_hotel_result_block.html", context)
+    
     return render (request, "hotels/hotel_list.html", context)
 
+
+""""Hotel Detail"""
 def hotel_details(request, slug):
 
     hotel = get_object_or_404(Hotel, slug=slug)
 
-    # have the rooms group by the type
-    # hotel = get_object_or_404(
-    #     Hotel.objects.prefetch_related(Prefetch('rooms', queryset=rooms_ordered)),
-    #     slug=slug
-    # )
     rooms = hotel.hotel_room.prefetch_related('room_image', 'room_type')
     room_type_map = defaultdict(list)
 
@@ -133,7 +159,7 @@ def hotel_details(request, slug):
     context = {
         'hotel' : hotel,
         'rooms' : rooms,
-        'amenities' : hotel.get_amenities(),
+        'amenities' : hotel.get_amenities(-1),
         'rating_percent' : rating_per,
         'room_type_map' : dict(room_type_map),
     }

@@ -1,0 +1,33 @@
+<section class = "filter-bar"> 
+
+    {% include "hotels/filters/_sorting.html" %}
+
+    <div class = "hotel-comparison">
+        <span class = "comparison-text">Compare Hotels</span>
+        <label class = "comparison-switch">
+            <input type = "checkbox">
+            <span class = "comparison-slider"> </span>
+        </label> 
+    </div>
+
+    <div class = 'side-btn btngroup'>
+        <button type = "button" class = 'side-btn filter-btn' id = "open-filter"> All Filters </button>
+        <button type = "button" class = 'side-btn filter-btn' id = "open-amenity-filter"> Amenity </button>
+        <button type = "button" class = 'side-btn filter-btn' id = "open-price-filter"> Price </button>
+        <button type = "button" class = 'side-btn filter-btn' id = "filterbar-reset-filter"> Reset </button>
+    </div>
+
+    <div class = "filter-navbar-divider"> </div>
+
+    {% include "hotels/filters/_general_drawer.html" %}
+
+    {% include "hotels/filters/_amenity_drawer.html" %} 
+
+    <div class = "detail-amenity-selection">
+        <button class = 'selection-btn' type = "button" onclick = "select()"> <span class = "icon-mask breakfast-icon"></span> <span class = "amenity-intro">Free Breakfast (280)</span> </button>
+        <button class = 'selection-btn' type = "button" onclick = "select()"> <span class = "icon-mask parking-icon"></span> <span class = "amenity-intro">Free Parking (280)</span> </button>
+        <button class = 'selection-btn' type = "button" onclick = "select()"> <span class = "icon-mask pet-icon"></span> <span class = "amenity-intro">Pet friendly (280)</span> </button>
+        <button class = 'selection-btn' type = "button" onclick = "select()"> <span class = "icon-mask shuttle-icon"></span> <span class = "amenity-intro">Airport Shuttle (50)</span> </button>
+    </div>
+
+</section>

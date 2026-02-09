@@ -2,81 +2,32 @@
 
 {% block content%}
 
-<section class = "filter">
-    <from method = "get">
-        <input type = "text" name = "q" placeholder = "Search Hotels..." value = "{{request.GET.get}}"> 
-
-        <input type = "number" name = "min_price" placeholder = "Min Pirce" value = "{{requesi.GET.min_price}}">
-        <input type = "number" name = "max_price" placeholder = "Max Pirce" value = "{{requesi.GET.max_price}}">
-
-        <select name = "rating"> 
-            <option value = ""> Any Rating </option>
-            <oprion value = "3"> 3+ Rating </option>
-            <option value = "4"> 4+ Rating </option> 
-        </select> 
-
-        <div class = "hotel-list amenity">
-            <label> <input type = "checkbox" name = "wifi" {%if request.GET.wifi%} checked {%endif%}> WiFi </label>
-            <label> <input type = "checkbox" name = "parking" {% if request.GET.parking %} checked {%endif%}> Free Parking </label>
-            <label> <input type = "checkbox" name = "pool" {%if request.GET.pool%} checked {%endif%}> Swimming Pool </label>
-            <label> <input type = "checkbox" name = "gym" {%if request.GET.gym%} checked {%endif%}> Gymnastics </label>
-            <label> <input type = "checkbox" name = "laundry" {%if request.GET.laundry%} checked {%endif%}> Laundry </label>
-        </div>
-
-        <div class = "sort">
-            <select name = "sort">
-                <option value =""> Sort By </option>
-                <option value="price_asc">Price ↑</option>
-                <option value="price_desc">Price ↓</option>
-                <option value="rating">Rating</option>
-            </select>
-        </div>
-
-        <button type = "submit"> Apply </button>
+<div class = "hotel-list-page">
+    <form   method="get" id="hotel-filter-form" hx-get="{% url 'hotels' %}" hx-target="#hotel-results-wrapper" hx-push-url="true" hx-on:submit = "normalizeFormParams(this); shouldFitMap = true">
+        {% include "hotels/filters/amenities/_hotel_features.html" %}
+        {% include "hotels/filters/amenities/_guest_services.html" %}
+        {% include "hotels/filters/amenities/_dining.html" %}
+        {% include "hotels/filters/amenities/_fitness_n_health.html" %}
+        {% include "hotels/filters/amenities/_recreation.html" %}
+        {% include "hotels/_search_bar.html" %}
+        {% include "hotels/_filter_bar.html" %}
     </form>
-</section>
 
-<section class = "hotel-list">
+    <div class = "section-divider"> </div>
 
-    <p> Showing {{hotel_count}} hotels </p>
-    {% for hotel in page_obj%}
-        <div class = "hotel-card">
-            {% with image=hotel.hotel_image.first %}
-                    {% if image %}
-                        <img src="{{ image.image.url }}" alt="{{ hotel.name }}">
-                    {% endif %}
-                {% endwith %}
-                <div class = "hotel-content"> 
-                    <div class = "hotel-header">
-                        <h3> {{hotel.name}} </h3>
-                        <span class="rating">★ {{ hotel.rating }}</span>
-                    </div>
-                    <p> {{hotel.city}}, {{hotel.state}} </p>
-                    
-                    <div class = "hotel-footer">
-                        <span class="price">${{ hotel.price_per_night }}/night</span>
-                        <a href="{% url 'hotel_details' hotel.slug %}" class="view">View Details</a>
-                    </div>
-                </div>
+    <section class = "hotels-and-map">
+
+        <div class = "hotels-list-section" id = 'hotel-results-wrapper' hx-on = "htmx:afterSwap: updateMapFromDOM()">
+            {% include 'hotels/_hotel_result_block.html'%}
         </div>
 
-    {%endfor%}
-</section>
+        <aside class = "map-section">
+            {% include "hotels/_hotel_map.html"%}
+        </aside>
 
-<section class = "pagination-control">
-
-    {% if page_obj.pagination.num_pages == None%}
-
-    {% else %}
-        {% if page_obj.has_previous %}
-            <a href="?{% querystring request.GET 'page' page_obj.previous_page_number %}">Prev</a> 
-        {% endif %}
-
-        Page {{page_obj.number}} of {{page_obj.pagination.num_pages}}
-
-        {% if page_obj.has_next%}
-            <a href="?{% querystring request.GET 'page' page_obj.next_page_number %}">Next</a>
-        {% endif %}
-    {%endif%}
-</section>
+    </section>
+    
+    <section class = 'TBD'> <section>
+</div>
 {%endblock%}
+

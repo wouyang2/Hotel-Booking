@@ -1,6 +1,7 @@
 from django.db import models
 from django.core.validators import RegexValidator, MaxValueValidator, MinValueValidator
 from accounts.models import User
+import random
 # Create your models here.
 class Hotel (models.Model):
 
@@ -28,6 +29,8 @@ class Hotel (models.Model):
     state = models.CharField(max_length=255)
     country = models.CharField(max_length=255)
     zip_code = models.IntegerField(blank=False)
+    latitude = models.FloatField(null = True, blank=True)
+    longitude = models.FloatField(null = True, blank = True)
 
     # Contact
     phone = models.CharField(validators=(phone_regex,), max_length=15)
@@ -43,9 +46,12 @@ class Hotel (models.Model):
     # Amnity
     parking = models.BooleanField(default=False)
     wifi = models.BooleanField(default = True)
-    pool = models.BooleanField(default = False)
+    indoor_pool = models.BooleanField(default = False)
     gym = models.BooleanField(default = True)
     laundry = models.BooleanField(default=True)
+    breakfast = models.BooleanField(default = False)
+    pet = models.BooleanField(default=False)
+    outdoor_pool = models.BooleanField(default=False)
 
     # Status
     is_active = models.BooleanField(default=True)
@@ -55,15 +61,16 @@ class Hotel (models.Model):
     created_at = models.DateField(auto_now_add=True)
     updated_at = models.DateField(auto_now=True)
 
+
     def __str__ (self):
         return self.name
 
-    def get_amenities(self):
+    def get_amenities(self, number):
         amenities = []
         if self.parking:
             amenities.append('Parking')
-        if self.pool:
-            amenities.append('Pool')
+        if self.indoor_pool:
+            amenities.append('Indoor_Pool')
         if self.wifi:
             amenities.append('Wifi')
         if self.gym:
@@ -71,7 +78,40 @@ class Hotel (models.Model):
         if self.laundry:
             amenities.append('Landury')
 
-        
+        if number == -1:
+            return amenities[:]
+        else:
+            re = []
+            ns = random.sample(range(0,len(amenities)), number)
+            
+            for n in ns:
+                re.append(amenities[n])
+
+            return re
+
+    def rating_percentage(self):
+        re = float(self.rating / 5) * 100
+
+        return re
+    
+    def get_featured_amenities(self):
+
+        feature = {}
+
+        if self.indoor_pool:
+            feature['indoor_pool'] = "Indoor Pool"
+        if self.outdoor_pool:
+            feature['outdoor_pool'] = "Outdoor Pool"
+        if self.breakfast:
+            feature['breakfast'] = "Free breakfast"
+        if self.parking:
+            feature['parking2'] = "Free Parking"
+        if self.pet:
+            feature['pet-friendly'] = "Pet Friendly"
+        if self.wifi:
+            feature['wifi'] = 'WiFi'
+
+        return feature
     
 class RoomType(models.Model):
     """Define types of rooms like Single, Double, Suite, etc."""

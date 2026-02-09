@@ -1,0 +1,73 @@
+<div class = "hotel-list-hotel-card" data-lat = "{{hotel.latitude}}" data-lon = "{{hotel.longitude}}" data-name = "{{hotel.name}}" data-hotel-id = "{{hotel.id}}" data-address = "{{hotel.address}}, {{hotel.city}}" data-price = "{{hotel.min_price}}">
+
+    <div class="hotel-list-hotel-image">
+        {% with image=hotel.hotel_image.first %}
+            {% if image %}
+                <img src="{{ image.image.url }}" alt="{{ hotel.name }}">
+            {% endif %}
+        {% endwith %}
+    </div>
+
+    <div class = "hotel-list-hotel-meta"> 
+        <div class = "hotel-list-hotel-header">
+            <h3> {{hotel.name}}</h3>
+        </div>
+
+        <div class = "hotel-list-hotel-content"> 
+            <div class = "hotel-list-hotel-content-left"> 
+                <a href = "{% url 'hotel_details' hotel.slug%}"> View hotel details </a> 
+                <div class = "star-rating">
+                    <span class = "star-rating-mask-icon"> </span>
+                    <div class="star-rating-stars">
+                        <div class="stars-back">★★★★★</div>
+                        <div class="stars-front" style="width: {{hotel.rating_percentage}}%">★★★★★</div>
+                    </div>
+                </div>
+                <span class="rating">Rating: {{ hotel.rating }} out of 5.0</span>
+                <span class = 'review'> Based on {{hotel.number_of_review}} 480 reviews. </span>
+                <div class = "featured-amenities"> </div>
+            </div>
+
+            <div class = "hotel-list-hotel-content-right"> 
+                <div class = "hotel-list-price-date">
+                    <div class = "hotel-list-pricing">
+                        <div class = 'hotel-list-from'> From* </div>
+                        <div class = 'hotel-list-start-pricing'> ${{hotel.min_price}}</div>
+                        <div class = "additional-info"> 
+                            <span class = "info-icon"> <i class="fa-solid fa-circle-info"></i> </span>
+                            <div class = "info-tooltip">  No cancallations. Pay now. </div>
+                        </div>
+                    </div>
+    
+                    <a href = "#" class = "date-selection"> Select Dates </a>
+                </div>
+            </div>
+            
+        </div>
+
+        
+        <div class = "hotel-list-hotel-footer">
+            {% if hotel.breakfast%}
+                <div class = "footer-amenities">
+                    <span class  = "little-icon breakfast"></span>
+                    <span class = "little-amenity-intro"> Free Breakfast </span>
+                </div>
+            {% endif %}
+
+            {% if hotel.pet%}
+                <div class = "footer-amenities">
+                    <span class  = "little-icon pet-friendly"></span>
+                    <span class = "little-amenity-intro"> Pet Friendly </span>
+                </div>
+            {% endif %}
+
+            {% if hotel.resort%}
+                <div class = "footer-amenities">
+                    <span class  = "little-icon resort"></span>
+                    <span class = "little-amenity-intro"> Resort </span>
+                </div>
+            {% endif %}
+
+        </div>  
+    </div>
+</div>

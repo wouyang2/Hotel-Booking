@@ -1,0 +1,21 @@
+<section class = "hotel-results" id = "hotel-results" hx-on="htmx:afterSwap: updateMapFromDOM()"> 
+
+        <div class = "hotel-list-grid">
+            {% for hotel in page_obj%}
+                {% include "hotels/_hotel_card.html" %}
+
+            {% empty %} 
+                <div class="no-results">
+                    <p>No hotels found.</p>
+                </div>
+
+            {%endfor%}
+        </div>
+
+        <div class = "pagination-divider"> </div>
+
+        {% include "hotels/_pagination.html" %}
+
+        <div class = "pagination-divider"> </div>
+
+</section>

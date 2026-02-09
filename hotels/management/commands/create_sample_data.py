@@ -16,6 +16,18 @@ ROOM_TYPES = [
     "Penthouse Suite",
 ]
 
+CITY_CENTERS = {
+    "New York": (40.7128, -74.0060),
+    "Los Angeles": (34.0522, -118.2437),
+    "San Francisco": (37.7749, -122.4194),
+    "Chicago": (41.8781, -87.6298),
+    "Boston": (42.3601, -71.0589),
+    "Seattle": (47.6062, -122.3321),
+    "Miami": (25.7617, -80.1918),
+    "Austin": (30.2672, -97.7431),
+}
+
+
 is_ = [True, False]
 
 def create_slug(name):
@@ -27,6 +39,11 @@ def create_slug(name):
     # Remove leading/trailing hyphens
     slug = slug.strip('-')
     return slug
+
+def random_offset():
+    # ~2–3km radius
+    return random.uniform(-0.025, 0.025)
+
 
 class Command(BaseCommand):
     help = "generate some sample date include hotels, managers, room types"
@@ -98,10 +115,13 @@ class Command(BaseCommand):
             slug = create_slug(name)
             phone = fake.phone_number()
             address = fake.address()
-            city = fake.city()
+            city = random.choice(list(CITY_CENTERS.keys()))
             states = ["AL", "AK", "AZ", "AR", "CA", "CO", "CT", "DE", "FL", "GA", "HI", "ID", "IL", "IN", "IA", "KS", "KY", "LA", "ME", "MD", "MA", "MI", "MN", "MS", "MO", "MT", "NE", "NV", "NH", "NJ", "NM", "NY", "NC", "ND", "OH", "OK", "OR", "PA", "RI", "SC", "SD", "TN", "TX", "UT", "VT", "VA", "WA", "WV", "WI", "WY"]
             state = random.choice(states)
             zip_code = fake.zipcode()
+            center_lat, center_lng = CITY_CENTERS[city]
+            latitude = center_lat + random_offset()
+            longitude = center_lng + random_offset()
 
             hotel, created = Hotel.objects.get_or_create(
                 id = i,
@@ -114,15 +134,23 @@ class Command(BaseCommand):
                     'zip_code': zip_code,
                     'state' : state,
                     'country' : 'USA',
+                    'latitude': latitude,
+                    'longitude': longitude,
                     'description': f"welcome to {name} Hotel",
                     'email': f"info@{slug}.com",
                     'rating': round(random.uniform(2,5),2),
                     'parking': random.choice(is_),
-                    'pool': random.choice(is_),
+                    'indoor_pool': random.choice(is_),
+                    'outdoor_pool': random.choice(is_),
                     'wifi':random.choice(is_),
                     'gym': random.choice(is_),
+                    'laundry':random.choice(is_),
+                    'pet':random.choice(is_),
+                    'breakfast':random.choice(is_),
                 }
+                
             )
+            self.stdout.write(f"Created hotel: {hotel.name} ({hotel.city}) "f"@ {hotel.latitude:.5f}, {hotel.longitude:.5f}")
             hotel.link_to_manager.set(managers)
 
             # Creating room 

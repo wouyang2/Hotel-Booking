@@ -1,0 +1,9 @@
+<span class = "hotel-showing"> Showing {{page_obj.start_index}} - {{page_obj.end_index}} hotels of {{hotel_count}} hotels</span>
+
+<div class = "city-state"> 
+    {% if search_state and search_country %}
+        Hotels in {{search_state}}, {{search_country}}
+    {%endif%}
+</div>
+
+{% include "hotels/_hotel_result.html"%} 

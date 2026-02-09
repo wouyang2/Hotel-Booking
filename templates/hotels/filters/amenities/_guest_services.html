@@ -1,0 +1,8 @@
+<div id - "amenities-input" hidden>
+    <input type = "checkbox" value = 'wifi' id = 'wifi' name = "amenities" {% if "wifi" in amenities %}checked{% endif %}>
+    <input type = "checkbox" value = "parking" id = "parking" name = "amenities" {% if "parking" in amenities %}checked{% endif %}> 
+    <input type = "checkbox" value = "shuttle" id = "shuttle" name = "amenities" {% if "shuttle" in amenities %}checked{% endif %}>
+    <input type = "checkbox" value = "digital-key" id = "digital-key" name = "amenities" {% if "digital_key" in amenities %}checked{% endif %}> 
+    <input type = "checkbox" value = "ev-charge" id = "ev-charge" name = "amenities" {% if "ev_charge" in amenities %}checked{% endif %}> 
+    <input type = "checkbox" value = "concierge" id = "concierge" name = "amenities" {% if "concierge" in amenities %}checked{% endif %}> 
+</div>
