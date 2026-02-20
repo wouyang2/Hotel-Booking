@@ -11,23 +11,30 @@
     </div>
 
     <div class = 'side-btn btngroup'>
-        <button type = "button" class = 'side-btn filter-btn' id = "open-filter"> All Filters </button>
+        <button type = "button" class = 'side-btn filter-btn' id = "open-filter"> 
+            All Filters 
+            <span id = "filter-count" class= "filter-count"> </span>
+        </button>
+        
         <button type = "button" class = 'side-btn filter-btn' id = "open-amenity-filter"> Amenity </button>
-        <button type = "button" class = 'side-btn filter-btn' id = "open-price-filter"> Price </button>
-        <button type = "button" class = 'side-btn filter-btn' id = "filterbar-reset-filter"> Reset </button>
+        <button type = "submit" class = 'side-btn filter-btn' id = "filterbar-reset-filter" data-action = 'reset'> Reset </button>
     </div>
 
     <div class = "filter-navbar-divider"> </div>
 
-    {% include "hotels/filters/_general_drawer.html" %}
+    <div class = 'filter-overlay' id = 'filter-overlay'>
 
-    {% include "hotels/filters/_amenity_drawer.html" %} 
+        {% include "hotels/filters/_general_drawer.html" %}
+
+        {% include "hotels/filters/_amenity_drawer.html" %} 
+
+    </div>
 
     <div class = "detail-amenity-selection">
-        <button class = 'selection-btn' type = "button" onclick = "select()"> <span class = "icon-mask breakfast-icon"></span> <span class = "amenity-intro">Free Breakfast (280)</span> </button>
-        <button class = 'selection-btn' type = "button" onclick = "select()"> <span class = "icon-mask parking-icon"></span> <span class = "amenity-intro">Free Parking (280)</span> </button>
-        <button class = 'selection-btn' type = "button" onclick = "select()"> <span class = "icon-mask pet-icon"></span> <span class = "amenity-intro">Pet friendly (280)</span> </button>
-        <button class = 'selection-btn' type = "button" onclick = "select()"> <span class = "icon-mask shuttle-icon"></span> <span class = "amenity-intro">Airport Shuttle (50)</span> </button>
+        <button class = 'amenity-btn selection-btn' type = "sumbit" onclick = "select()" data-amenity = "breakfast" aria-pressed = "false"> <span class = "icon-mask breakfast-icon"></span> <span class = "amenity-intro">Free Breakfast ({{amenity_count_map.breakfast | default:0 }})</span> </button>
+        <button class = 'amenity-btn selection-btn' type = "submit" onclick = "select()" data-amenity = "parking" aria-pressed = "false"> <span class = "icon-mask parking-icon"></span> <span class = "amenity-intro">Free Parking ({{amenity_count_map.parking| default:0 }})</span> </button>
+        <button class = 'amenity-btn selection-btn' type = "submit" onclick = "select()" data-amenity = "pet_friendly" aria-pressed = "false"> <span class = "icon-mask pet-icon"></span> <span class = "amenity-intro">Pet friendly ({{amenity_count_map.pet_friendly | default:0 }})</span> </button>
+        <button class = 'amenity-btn selection-btn' type = "submit" onclick = "select()" data-amenity = "shuttle" aria-pressed = "false"> <span class = "icon-mask shuttle-icon"></span> <span class = "amenity-intro">Airport Shuttle ({{amenity_count_map.shuttle | default:0 }})</span> </button>
     </div>
 
 </section>

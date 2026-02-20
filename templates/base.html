@@ -3,6 +3,7 @@
 <!DOCTYPE html>
 <html>
 <head>
+
     <meta name="viewport" content="width=device-width, initial-scale=1.0"> </meta>
     <title> {% block title %}Hotel Booking{% endblock %} </title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com" crossorigin="anonymous" referrerpolicy="no-referrer" />
@@ -16,6 +17,13 @@
     <script src = "{% static "js/register.js" %}"> </script>
     <script src = "{% static "js/message.js" %}"> </script>
     <script src = "{% static "js/login.js" %}"> </script>
+
+    <!-- Date Selection -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css">
+    <script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
+    <script src="https://cdn.jsdelivr.net/npm/flatpickr/dist/plugins/rangePlugin.js"></script>
+
+    <!-- Hotel List -->
     <script src = "{% static "js/hotel_list.js" %}"> </script>
 
     <!--Interactive map-->

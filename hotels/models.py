@@ -43,14 +43,43 @@ class Hotel (models.Model):
     # Rating
     rating = models.DecimalField(validators=[MinValueValidator(0), MaxValueValidator(5)], decimal_places=1,max_digits=3)
 
-    # Amnity
+    #---------------- Amnity  ----------------- #
+
+    # Hotel Features
+    connecting_rooms = models.BooleanField(default=False)
+    smoke_free = models.BooleanField(default=False)
+    inroom_kitchen = models.BooleanField(default=False)
+    pet_friendly = models.BooleanField(default=False)
+    no_pets = models.BooleanField(default=False)
+    streaming_entertainment = models.BooleanField(default=False)
+    lounge = models.BooleanField(default=False)
+    
+    # Guest Service
     parking = models.BooleanField(default=False)
+    digital_key = models.BooleanField(default=False)
     wifi = models.BooleanField(default = True)
+    shuttle = models.BooleanField(default=False)
+    ev_charging = models.BooleanField(default=False)
+    concierge = models.BooleanField(default=False)
+    laundry = models.BooleanField(default=True)
+
+    # Dining
+    breakfast = models.BooleanField(default = False)
+    reception = models.BooleanField(default = False)
+    onsite_restaurant = models.BooleanField(default = False)
+    room_service = models.BooleanField(default = False)
+
+    # Recreation
+    beach = models.BooleanField(default = False)
+    golf = models.BooleanField(default = False)
+    tennis = models.BooleanField(default = False)
+    ski = models.BooleanField(default = False)
+    casino = models.BooleanField(default = False)
+
+    # Fitness 
     indoor_pool = models.BooleanField(default = False)
     gym = models.BooleanField(default = True)
-    laundry = models.BooleanField(default=True)
-    breakfast = models.BooleanField(default = False)
-    pet = models.BooleanField(default=False)
+    spa = models.BooleanField(default=False)
     outdoor_pool = models.BooleanField(default=False)
 
     # Status
@@ -105,7 +134,7 @@ class Hotel (models.Model):
         if self.breakfast:
             feature['breakfast'] = "Free breakfast"
         if self.parking:
-            feature['parking2'] = "Free Parking"
+            feature['parking'] = "Free Parking"
         if self.pet:
             feature['pet-friendly'] = "Pet Friendly"
         if self.wifi:

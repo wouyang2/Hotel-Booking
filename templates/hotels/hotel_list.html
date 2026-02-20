@@ -2,6 +2,8 @@
 
 {% block content%}
 
+{% include 'hotels/calender/_calender_drawer.html' %}
+
 <div class = "hotel-list-page">
     <form   method="get" id="hotel-filter-form" hx-get="{% url 'hotels' %}" hx-target="#hotel-results-wrapper" hx-push-url="true" hx-on:submit = "normalizeFormParams(this); shouldFitMap = true">
         {% include "hotels/filters/amenities/_hotel_features.html" %}
@@ -14,10 +16,12 @@
     </form>
 
     <div class = "section-divider"> </div>
+    
 
     <section class = "hotels-and-map">
 
         <div class = "hotels-list-section" id = 'hotel-results-wrapper' hx-on = "htmx:afterSwap: updateMapFromDOM()">
+
             {% include 'hotels/_hotel_result_block.html'%}
         </div>
 
@@ -27,7 +31,7 @@
 
     </section>
     
-    <section class = 'TBD'> <section>
+    <section class = 'TBD'> </section>
 </div>
 {%endblock%}
 

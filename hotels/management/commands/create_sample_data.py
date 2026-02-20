@@ -139,14 +139,38 @@ class Command(BaseCommand):
                     'description': f"welcome to {name} Hotel",
                     'email': f"info@{slug}.com",
                     'rating': round(random.uniform(2,5),2),
+
+                    'connecting_rooms' : random.choice(is_),
+                    'pet_friendly':random.choice(is_),
+                    'smoke_free':random.choice(is_),
+                    'inroom_kitchen':random.choice(is_),
+                    'no_pets':random.choice(is_),
+                    'streaming_entertainment':random.choice(is_),
+                    'lounge': random.choice(is_),
+
                     'parking': random.choice(is_),
+                    'wifi':random.choice(is_),
+                    'digital_key':random.choice(is_),
+                    'shuttle':random.choice(is_),
+                    'ev_charging':random.choice(is_),
+                    'concierge':random.choice(is_),
+                    'laundry':random.choice(is_),
+
+                    'breakfast':random.choice(is_),
+                    'reception':random.choice(is_),
+                    'onsite_restaurant':random.choice(is_),
+                    'room_service':random.choice(is_),
+
+                    'beach' : random.choice(is_),
+                    'golf' : random.choice(is_),
+                    'tennis' : random.choice(is_),
+                    'ski' : random.choice(is_),
+                    'casino' : random.choice(is_),
+
                     'indoor_pool': random.choice(is_),
                     'outdoor_pool': random.choice(is_),
-                    'wifi':random.choice(is_),
                     'gym': random.choice(is_),
-                    'laundry':random.choice(is_),
-                    'pet':random.choice(is_),
-                    'breakfast':random.choice(is_),
+                    'spa': random.choice(is_),
                 }
                 
             )

@@ -1,17 +1,42 @@
-<section class = "destination-date"> 
+<section class = "destination-date" id = 'destination-date'> 
     <div class = "search-field destination"> 
-        <div class = "destination-icon"> <i class="fa-solid fa-magnifying-glass"></i> </div>  
-        <input type = 'text' name = 'location' placeholder = 'destination' autocomplate = 'on' class= 'location-input' value = {{location | default:''}}>
+        <div class = "destination-icon"> <i class="fa-solid fa-magnifying-glass-location"></i> </div>  
+        <input type = 'text' name = 'location' placeholder = 'Where are you going?' autocomplate = 'on' class= 'location-input' value = {{location | default:''}}>
     </div>
 
-    <div class = "search-field checkin-contianer">
-        <input class = 'checkin-input' type = 'date' min = {{today}} value = {{checkin|default:''}} id = "checkin"> 
-    </div>
+    <div class="search-divider"></div>
 
-    <div class = "search-field checkout-contianer">
-        <input class = 'checkout-input' type = 'date' min = {{today}} value = {{checkout|default:''}} id = "checkout"> 
-    </div>
+    <div class = 'search-field date-n-update'>
 
-    <button type = 'submit' id = "update-hotels"> Update </button>
+        <div class = "search-field checkin-contianer" id = 'checkin-click-zone'>
+            <div class = "visual-date">
+                <span class = 'date-mask'> </span>
+                <span class="date-label" id = 'checkin-display'>Check-in</span>
+            </div>
+            <input class = 'checkin-input' type = 'text' name = 'checkin' id = "checkin" value="{{ checkin|default:'' }}" readonly> 
+        </div>
+
+        <div class="date-divider"></div>
+
+        <div class = "search-field checkout-contianer" id = 'checkout-click-zone'>
+            <div class = "visual-date">
+                <span class = 'date-mask'> </span>
+                <span class="date-label" id = 'checkout-display'>Check-out</span>
+            </div>
+            <input class = 'checkout-input' type = 'text' name = "checkout" value = "{{checkout|default:''}}" id = "checkout" readonly> 
+        </div>
+
+        <div class="date-divider"></div>
+
+        <button 
+            type="button" 
+            id="update-hotels"
+            hx-get="{% url 'hotels' %}" 
+            hx-target="#hotel-results-wrapper" 
+            hx-include="#checkin, #checkout"
+            hx-indicator=".loading-spinner">
+            Update
+        </button>
+    </div>
 
 </section>

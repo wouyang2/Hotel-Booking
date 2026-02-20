@@ -811,19 +811,224 @@ body,html {
 /* -------- Destination and Date Bar ---------- */
 
 .destination-date{
-    background-color: #e2e2e2;
-    height: 53px;
-    width: 100%;
+    background-color: #ffffff;
+    height: 4rem;
+    margin: 0 1rem;
+    padding: 0 10px;
 
     display: flex;
+    align-items: center;
+    border-radius: 10px;
+    box-shadow: 0.3px 1px 3px #000000;
 }
 
-.search-field.destination{
+.search-field{
+    position: relative;
     display: flex;
     align-items: center;
 }
 
+.search-field.destination{
+    width: 65%;
+    gap: 12px;
+    height: 100%;
+}
+
+.destination-icon{
+    font-size: 1.2rem;
+}
+
+.search-field.destination input{
+
+    font-family: "Goudy Bookletter 1911", serif;
+    font-weight: 900;
+    font-style: normal;
+
+    width: 100%;
+    height: 100%;
+    border: none;
+    outline: none;
+
+    background: transparent;
+
+    font-size: 1.2rem;
+    color: #1e293b;
+}
+
+.search-field.destination:focus-within input::placeholder{
+    color: #fff;
+}
+
+.search-divider {
+
+    width: 2px;
+    height: 60%;
+    background-color: #d6dbe2;
+    margin: 0 2px;
+    flex-shrink: 0;
+}
+
+.search-field.date-n-update{
+    flex:1;
+    gap: 10px;
+    height: 100%;
+    align-items: center;
+    /* justify-content: space-between; */
+    display: grid;
+    grid-template-columns: 1fr 0 1fr 0 1fr;
+}
+
+.search-field.checkin-contianer{
+    position: relative; /* So the input can align to it */
+    display: flex;
+    align-items: center;
+    cursor: pointer;
+    padding: 10px;
+
+}
+
+.visual-date{
+    position: absolute;
+    display: flex;
+    align-items: center;
+    justify-content: space-around;
+    width: 100%;
+    pointer-events: none; /* Let clicks pass through to the input below */
+    z-index: 1;
+}
+
+.date-mask{
+    height:1.4rem;
+    width:1.4rem;
+
+    background-color: black;
+
+    mask-repeat: no-repeat;
+    mask-size: contain;
+
+    -webkit-mask-image: url('../icons/calender.svg');
+    mask-image: url('../icons/calender.svg');
+}
+
+.date-label{
+    font-size: 1.2rem;
+    /* color: #94a3b8; */
+    color: black;
+    font-weight: 500;
+}
+
+.checkin-input{
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    opacity: 0;
+    cursor: pointer;
+    z-index: 2;
+}
+
+.date-divider {
+    width: 1px;
+    height: 60%;
+    background-color: #d6dbe2;
+    margin: 0 2px;
+    flex-shrink: 0;
+}
+
+.search-field.checkout-contianer{
+    position: relative; /* So the input can align to it */
+    display: flex;
+    align-items: center;
+    cursor: pointer;
+    padding: 10px;
+}
+
+.checkout-input{
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    opacity: 0;
+    cursor: pointer;
+    z-index: 2;
+}
+
+#update-hotels{
+    font-family: "Goudy Bookletter 1911", serif;
+    font-weight: 900;
+    font-style: normal;
+
+    font-size: 1.1rem;
+
+    background-color: transparent;
+    padding: 10px ; 
+}
+
+#update-hotels:hover{
+    transition: 0.3s ease-out;
+    background-color: rgb(0, 54, 111);
+    color: white;
+}
+
+.flatpickr-day.inRange {
+    background: #f1f5f9 !important;
+    border-color: #f1f5f9 !important;
+    box-shadow: -5px 0 0 #f1f5f9, 5px 0 0 #f1f5f9;
+}
 /*------------------------------------------------*/
+
+/*--------- Calender Drawer --------------*/
+
+/* Ensure the drawer is wide enough for 2 months (approx 650px min) */
+#date-picker-drawer {
+    width: 660px; /* Specific width for date mode to prevent 'crashing' */
+    max-width: 95vw;
+    margin:auto;
+}
+
+.drawer-content {
+    display: flex;
+    flex-direction: column;
+    align-items: center; /* Centers everything horizontally */
+    width: 100%;
+    padding: 1rem 0;
+}
+
+/* The Container Fix */
+#inline-calendar-container {
+    display: inline-block; /* Allows it to be centered by parent */
+    width: auto;           /* Don't force 100% width */
+    margin: 0 auto;
+}
+
+/* Force Flatpickr to use its full width for 2 months */
+.flatpickr-calendar.inline {
+    margin: 0 auto !important;
+    box-shadow: none;
+}
+
+/* Adjust the individual month padding so they don't look cramped */
+.flatpickr-months .flatpickr-month {
+    padding: 0 10px;
+}
+
+.date-summary-zone {
+    text-align: center;
+    padding: 1rem;
+    background: #f8fafc; /* Very light grey */
+    border-radius: 12px;
+    margin: 1rem 0;
+}
+
+#drawer-date-range-text {
+    font-weight: 600;
+    color: #1e293b;
+    margin: 0;
+}
+
+/*------------ End --------------------*/
 
 /*--------------------------
     Hotel List Navigation Bar 
@@ -986,7 +1191,7 @@ body,html {
     background-color: white;
     color:#475569;
     height: 5.3vh;
-    width: 6vw;
+    width: 7.5vw;
     border-radius: 8px;
     border: 1px solid #282f39;
 
@@ -995,6 +1200,10 @@ body,html {
 
     font-size: 0.9rem;
     margin: 0 0.3rem 0 0.3rem;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
 }
 
 .filter-btn:hover{
@@ -1004,6 +1213,15 @@ body,html {
 .filter-btn:focus {
     outline: max(2px, 0.15em) solid currentColor;
     outline-offset: max(2px, 0.15em);
+}
+
+.side-btn.filter-btn span {
+    display: none;
+}
+
+.side-btn.filter-btn span.active {
+    display: inline;
+    margin-left: 5px;
 }
 
 /*-------------------------
@@ -1039,29 +1257,10 @@ body,html {
 }
 
 .filter-drawer {
-    display:hidden;
+    display:none;
 }
 
 .filter-drawer.active {
-    background: white;
-    width: 55%;
-    height:88vh;
-    padding: 0;
-    border-radius: 8px;           /* Large rounded corners like your image */
-    box-shadow: 0 20px 60px rgba(0, 0, 0, 0.15);
-    animation: slideUp 0.3s ease-out; /* Smooth entrance */
-
-    display: flex;
-    flex-direction: column;
-    box-sizing: border-box;
-    overflow-x: hidden;
-}
-
-.amenity-filter-drawer {
-    display: hidden;
-}
-
-.amenity-filter-drawer.active {
     background: white;
     width: 55%;
     height:88vh;
@@ -1671,7 +1870,7 @@ input[type="range"]::-webkit-slider-thumb {
     top: 0.7rem;
 }
 
-.selection-btn{
+.amenity-btn.selection-btn{
     font-family: "Goudy Bookletter 1911", serif;
     font-weight: 900;
     font-style: normal;
@@ -1691,7 +1890,7 @@ input[type="range"]::-webkit-slider-thumb {
     padding: 0 0.3rem 0 0.3rem;
 }
 
-.selection-btn:hover{
+.amenity-btn.selection-btn:hover{
     cursor: pointer;
 }
 
@@ -1743,7 +1942,7 @@ input[type="range"]::-webkit-slider-thumb {
     mask-repeat: no-repeat;
 }
 
-.selection-btn.selected{
+.amenity-btn.selection-btn.active{
 
     background-color: rgb(0, 109, 109);
     color: white;
@@ -1753,7 +1952,7 @@ input[type="range"]::-webkit-slider-thumb {
     
 }
 
-.selection-btn.selected .icon-mask{
+.amenity-btn.selection-btn.active .icon-mask{
     background-color: white;
 }
 
@@ -1763,6 +1962,187 @@ input[type="range"]::-webkit-slider-thumb {
     
 }
 
+/*--------------------------------
+    Selected Filter Section
+-----------------------------------*/
+
+.selected-filter-section{
+    display: flex;
+    gap: 4px;
+    overflow-x: auto;
+    padding:0 0 1rem 1rem;
+}
+
+.selected-amenity-capsule {
+    flex-shrink: 0;
+    display: inline-flex;
+    border-radius: 30px;
+    border: 1px solid black;
+   
+    padding: 5px;
+
+    align-items: center;
+    width: auto;
+    gap: 5px;
+}
+
+.selected-close{
+    display: flex;
+    align-items: center;
+    justify-content: center ;
+    font-size: 10px;
+    margin-left: 5px;
+    background-color: transparent;
+    border: transparent;
+    cursor: pointer;
+}
+
+.selected-icon {
+    display: inline-block;
+    background-color: #475569;
+
+    height: 1.1rem;
+    width: 1.1rem;
+
+    mask-size: contain;
+    mask-repeat: no-repeat;
+    margin-right: 0.5rem;
+    margin-left: 5px;
+}
+
+.shuttle{
+    -webkit-mask-image: url('../icons/airport-transfer.svg');
+    mask-image: url('../icons/airport-transfer.svg');
+}
+
+.connecting_rooms{
+    -webkit-mask-image: url('../icons/connecting_rooms.svg');
+    mask-image: url('../icons/connecting_rooms.svg');
+}
+
+.pet_friendly{
+    -webkit-mask-image: url('../icons/pet-friendly.svg');
+    mask-image: url('../icons/pet-friendly.svg');
+}
+
+.no_pets {
+    -webkit-mask-image: url('../icons/no_pets.svg');
+    mask-image: url('../icons/no_pets.svg');
+}
+
+.smoke_free {
+    -webkit-mask-image: url('../icons/smoke_free.svg');
+    mask-image: url('../icons/smoke_free.svg');
+}
+
+.stream_entertainment{
+    -webkit-mask-image: url('../icons/stream_entertainment.svg');
+    mask-image: url('../icons/stream_entertainment.svg');
+}
+
+.inroom_kitchen{
+    -webkit-mask-image: url('../icons/inroom_kitchen.svg');
+   mask-image: url('../icons/inroom_kitchen.svg');
+}
+
+.lounge{
+    -webkit-mask-image: url('../icons/lounge.svg');
+    mask-image: url('../icons/lounge.svg');
+}
+
+.wifi {
+    -webkit-mask-image: url('../icons/wifi.svg');
+    mask-image: url('../icons/wifi.svg');
+}
+
+.parking {
+    -webkit-mask-image: url('../icons/parking2.svg');
+    mask-image: url('../icons/parking2.svg');
+}
+
+.digital-key {
+    -webkit-mask-image: url('../icons/digital-key.svg');
+    mask-image: url('../icons/digital-key.svg');
+}
+
+.ev-charge {
+    -webkit-mask-image: url('../icons/ev-charge.svg');
+    mask-image: url('../icons/ev-charge.svg');
+}
+
+.concierge {
+    -webkit-mask-image: url('../icons/concierge.svg');
+    mask-image: url('../icons/concierge.svg');
+}
+
+.breakfast {
+    -webkit-mask-image: url('../icons/breakfast.svg');
+    mask-image: url('../icons/breakfast.svg');
+}
+
+.reception {
+    -webkit-mask-image: url('../icons/evening-reception.svg');
+    mask-image: url('../icons/evening-reception.svg');
+}
+
+.onsite-restaurant {
+    -webkit-mask-image: url('../icons/onsite-restaurant.svg');
+    mask-image: url('../icons/onsite-restaurant.svg');
+}
+
+.room_service {
+    -webkit-mask-image: url('../icons/room-service.svg');
+    mask-image: url('../icons/room-service.svg');
+}
+
+.beach {
+    -webkit-mask-image: url('../icons/beach.svg');
+    mask-image: url('../icons/beach.svg');
+}
+
+.golf {
+    -webkit-mask-image: url('../icons/golf.svg');
+    mask-image: url('../icons/golf.svg');
+}
+
+.tennis {
+    -webkit-mask-image: url('../icons/tennis.svg');
+    mask-image: url('../icons/tennis.svg');
+}
+
+.ski {
+    -webkit-mask-image: url('../icons/ski.svg');
+    mask-image: url('../icons/ski.svg');
+}
+
+.casino {
+    -webkit-mask-image: url('../icons/casino.svg');
+    mask-image: url('../icons/casino.svg');
+}
+
+.indoor-pool {
+    -webkit-mask-image: url('../icons/indoor_pool.svg');
+    mask-image: url('../icons/indoor_pool.svg');
+}
+
+.outdoor_pool {
+    -webkit-mask-image: url('../icons/outdoor_pool.svg');
+    mask-image: url('../icons/outdoor_pool.svg');
+}
+
+.gym{
+    -webkit-mask-image: url('../icons/gym.svg');
+    mask-image: url('../icons/gym.svg');
+}
+
+.spa {
+    -webkit-mask-image: url('../icons/spa.svg');
+    mask-image: url('../icons/spa.svg');
+}
+
+
+
+
 /*------------------------------
     Hotel List and Card
     ---------------------------*/
@@ -1771,8 +2151,9 @@ input[type="range"]::-webkit-slider-thumb {
     gap:10px;
     position:relative; */
     display:grid;
-    grid-template-columns: 2fr 1fr;
+    grid-template-columns: minmax(0, 2fr) 1fr;
     gap: 10px;
+    width: 100%;
 }
 
 .hotels-list-section{
@@ -1780,6 +2161,8 @@ input[type="range"]::-webkit-slider-thumb {
     width:100%;
     display: flex;
     flex-direction: column;
+    overflow-x: hidden;
+    z-index: 999;
 }
 
 .hotel-showing{
@@ -2068,7 +2451,7 @@ input[type="range"]::-webkit-slider-thumb {
     mask-image: url('../icons/indoor_pool.svg');
 }
 
-.parking2{
+.parking{
     -webkit-mask-image: url('../icons/parking2.svg');
     mask-image: url('../icons/parking2.svg');
 }
@@ -2099,11 +2482,12 @@ input[type="range"]::-webkit-slider-thumb {
 -----------------------*/
 .map-section {
     padding: 1rem 1rem 0 0;
-    top:1px;
+    top:40px;
    
     position: sticky;
     
     height: calc(100vh - 40px);
+    z-index: 0;
 }
 
 #hotel-map{
@@ -2393,7 +2777,14 @@ input[type="range"]::-webkit-slider-thumb {
     justify-content: center;
 }
 
-.date-selection{
+.date-selection-btn{
+
+    font-family: "Goudy Bookletter 1911", serif;
+    font-weight: 900;
+    font-style: normal;
+
+    font-size: 1rem;
+
     border-radius: 5px;
     width: 10rem;
     height: 3rem;
@@ -2405,6 +2796,12 @@ input[type="range"]::-webkit-slider-thumb {
     align-items: center;
     justify-content: center;
     text-decoration: none;
+    cursor: pointer;;
+}
+
+.date-selection-btn:hover{
+    transition: 0.3s ease-out;
+    background-color: rgb(0, 110, 110);
 }
 
 .amenities {

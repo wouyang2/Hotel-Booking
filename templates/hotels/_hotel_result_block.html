@@ -1,3 +1,15 @@
+{% if has_filters %}
+    <section class = "selected-filter-section"> 
+        {% for amenity in selected_filters %}
+            <div class = "selected-amenity-capsule">
+                <span class = 'selected-icon {{amenity.0}}'> </span>
+                <span class = "selected-text"> {{amenity.1}} </span>
+                <button type = 'button' class = 'selected-close' data-amenity="{{ amenity.0 }}"> <i class="fa-solid fa-xmark"></i> </button>
+            </div>
+        {% endfor %}
+    </section>
+{% endif %}
+
 <span class = "hotel-showing"> Showing {{page_obj.start_index}} - {{page_obj.end_index}} hotels of {{hotel_count}} hotels</span>
 
 <div class = "city-state"> 

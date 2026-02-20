@@ -4,81 +4,90 @@ let drawerSnapshot = null;
 
 // ----------- Destination and Date Search Bar ------ //
 
-document.addEventListener('DOMContentLoaded', () => {
+// Calender Setup 
+function initDatePickers() {
+    const checkinInput = document.getElementById('checkin');
+    const checkoutInput = document.getElementById('checkout');
+    const checkinDisplay = document.getElementById('checkin-display');
+    const checkoutDisplay = document.getElementById('checkout-display');
 
-    const checkIn = document.getElementById('checkin');
-    const checkOut = document.getElementById('checkout');
+    if (!checkinInput || !checkoutInput) return;
 
-    checkIn.addEventListener('change', ()=>{
-        checkOut.min = checkIn.value + 1;
+    // Helper to format date for display (e.g., Feb 19)
+    const formatDate = (dateObj) => {
+        return dateObj.toLocaleDateString('en-US', { month: 'short', day: 'numeric' });
+    };
+
+    flatpickr("#checkin", {
+        mode: "range",          // Enables selecting a start and end date
+        minDate: "today",
+        dateFormat: "Y-m-d",
+        showMonths: 2,          // Optional: Shows two months side-by-side (very premium feel)
+        
+        onChange: function(selectedDates, dateStr, instance) {
+            // 1. Handle the Start Date (Check-in)
+            if (selectedDates[0]) {
+                const start = instance.formatDate(selectedDates[0], "Y-m-d");
+                checkinInput.value = start;
+                checkinDisplay.textContent = formatDate(selectedDates[0]);
+            }
+
+            // 2. Handle the End Date (Check-out)
+            if (selectedDates[1]) {
+                const end = instance.formatDate(selectedDates[1], "Y-m-d");
+                checkoutInput.value = end;
+                checkoutDisplay.textContent = formatDate(selectedDates[1]);
+                
+                // Optional: Close the calendar automatically after selecting the second date
+                instance.close();
+            } else {
+                // Clear checkout if only one date is picked (or re-selecting)
+                checkoutInput.value = "";
+                checkoutDisplay.textContent = "Check-out";
+            }
+        }
     });
 
+    // Make the checkout box also trigger the same calendar
+    document.getElementById('checkout-click-zone').addEventListener('click', () => {
+        checkinInput._flatpickr.open();
+    });
+}
+
+document.addEventListener('DOMContentLoaded', () => {
+    updateFilterCountUI();
+    initDatePickers();
 });
+
+document.addEventListener('htmx:afterSwap', initDatePickers);
 // ---------------------------------------------------//
 
 // --------------- HTMX Loading --------------------------//
 document.addEventListener('htmx:load', function () {
     initHotelFilters();
+    initDatePickers();
 });
-//--------------------------------------------------//
 
 /* ------------------------ ----------------  
-                Amenity Drawer
+                 Drawers
     -------------------------------------*/
 
-// Open | Close Amenity Filter
 document.addEventListener('DOMContentLoaded', () => {
-    const AmenityDrawerOpenBtn = document.getElementById("open-amenity-filter");
-    const AmenityDrawerCloseBtn = document.getElementById('close-filter');
-    const AmenityDrawerCancelBtn = document.getElementById('cancel-filter');
-    const resetBtn = document.getElementById('amenity-reset-filter');
+
     const overlay = document.getElementById('filter-overlay');
 
-    AmenityDrawerOpenBtn.onclick = openAmenityDrawer;
-    AmenityDrawerCloseBtn.onclick = () => closeFilterDrawer(true);
-    AmenityDrawerCancelBtn.onclick = () => closeFilterDrawer(true);
-
-    overlay.addEventListener('click', (event) => {
-        if (event.target === overlay || event.target.dataset.closeAmenity !== undefined){
-
-            closeFilterDrawer(true);
-        }
-    });
-
-    // Reset Amenity Drawer
-    resetBtn.addEventListener("click", ()=>{
-
-        overlay.querySelectorAll('input[type = "checkbox"]').forEach(checkbox => {
-            checkbox.checked = false;
-        });
-
-    });
-
-});
-/* ------------------------ ----------------  
-                General Drawer
-    -------------------------------------*/
-
-document.addEventListener('DOMContentLoaded', () => {
-
-    const generalDrawer = document.getElementById('filter-drawer');
-    const amenityDrawer = document.getElementById('amenity-filter-drawer');
-
+    // General Drawer
     const openBtn = document.getElementById('open-filter');
-    const closeBtn = document.getElementById('close-filter');
-    const overlay = document.getElementById('filter-overlay');
-    const cancelBtn = document.querySelector('.cancel-filter');
-    const ApplyBtn = document.querySelector('.apply-filter');
 
     openBtn.addEventListener('click', () => {
-        openFilterDrawer();
+        openFilterDrawer('filter-drawer');
     });
 
-    closeBtn.addEventListener('click', () => {
-        closeFilterDrawer(true);
-    });
+    // Closing drawer
+    document.addEventListener('click',(e) => {
+        const btn = e.target.closest('[data-action = "close"]');
+        if (!btn) return;
 
-    cancelBtn.addEventListener('click', () => {
         closeFilterDrawer(true);
     });
 
@@ -89,11 +98,34 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     });
 
-    ApplyBtn.addEventListener('click', () => {
-        drawerSnapshot = null;
-        overlay.classList.remove('active');
-        document.body.style.overflow = 'auto';
+    // Apply Filter
+    document.getElementById('hotel-filter-form').addEventListener('htmx:afterRequest', () => {
+
+        const form = document.getElementById('hotel-filter-form');
+        drawerSnapshot = new FormData(form);
+        updateFilterCountUI();
+        closeFilterDrawer(false);
     });
+
+    // Reset Filter
+    document.addEventListener('click', (e) => {
+        const btn = e.target.closest('[data-action = "reset"]');
+        if (!btn) return;
+
+        const drawer = (btn.id === 'filterbar-reset-filter') 
+            ? document.getElementById('filter-drawer')
+            : btn.closest('.filter-drawer');
+
+        if (!drawer) return;
+        resetDrawerInputs(drawer.id);
+    });
+
+    // Amenity Drawer
+    const AmenityOpenBtn = document.getElementById('open-amenity-filter');
+
+    AmenityOpenBtn.onclick = () => openFilterDrawer('amenity-filter-drawer');
+
+    updateFilterCountUI();
 });
 
 // Min / Max Price filter
@@ -141,23 +173,7 @@ document.addEventListener('DOMContentLoaded', () => {
     maxSlider.oninput = handleInput;
 
     renderUI();
-});
-
-// Filter Drawer Reset 
-document.addEventListener('DOMContentLoaded', () => {
-    const form = document.getElementById('hotel-list-form');
-    const resetBtn = document.getElementById("reset-filter");
-    const FilterBarResetBtn = document.getElementById("filterbar-reset-filter");
-
-    resetBtn.addEventListener("click", (e)=>{
-        resetDrawerInputs();
-        drawerSnapshot = null;
-    });
-
-    FilterBarResetBtn.onclick = () => {
-        resetDrawerInputs();
-        drawerSnapshot = null;
-    }
+    updateFilterCountUI();
 });
 
 // Regular Funcntionality
@@ -172,17 +188,16 @@ document.addEventListener('DOMContentLoaded', () => {
     
             syncAmenityButton(btn);
             syncAmenityUI(btn.dataset.amenity);
-
-            mask = btn.querySelector('span');
-
-            if (mask) {
-                mask.classList.toggle("active");
-            }
         });
     });
+
+    updateFilterCountUI();
 });
 
-document.addEventListener('DOMContentLoaded', initAmenityButtons);
+document.addEventListener('DOMContentLoaded', () => {
+    initAmenityButtons();
+    updateFilterCountUI();
+});
 document.addEventListener('htmx:load', initAmenityButtons);
 
 // -------------- End ---------------------// 
@@ -194,9 +209,153 @@ document.addEventListener('DOMContentLoaded', () =>{
 
     buttons.forEach(button => {
         button.select = function(){
-            button.classList.toggle('selected');
+            button.classList.toggle('active');
         };
     }); 
+    updateFilterCountUI();
+});
+
+// Filter Count
+function countAppliedFilters() {
+    const form = document.getElementById('hotel-filter-form');
+    const formData = new FormData(form);
+
+    let count = 0;
+
+    /* Rating */
+    if (formData.get('rating')) {
+        count += 1;
+    }
+
+    /* Price */
+    const min = formData.get('min_price');
+    const max = formData.get('max_price');
+
+    if (
+        (min && min !== '0') ||
+        (max && max !== '500')
+    ) {
+        count += 1;
+    }
+
+    /* Amenities (each counts) */
+    const amenities = formData.getAll('amenities');
+    count += amenities.length;
+
+    return count;
+}
+
+function updateFilterCountUI() {
+    const badge = document.getElementById('filter-count');
+    const count = countAppliedFilters();
+
+    if (count > 0) {
+        badge.textContent = "(" + count + ")";
+        badge.classList.add('active');
+    } else {
+        badge.className = '';
+    }
+}
+
+// Filter Selection
+document.addEventListener('click', function(e) {
+    const closeBtn = e.target.closest('.selected-close');
+    if (!closeBtn) return;
+
+    const keyToRemove = closeBtn.getAttribute('data-amenity');
+    console.log(keyToRemove);
+
+    const form = document.getElementById('hotel-filter-form');
+
+    const checkbox = form.querySelector(`input[name="amenities"][value="${keyToRemove}"]`);
+
+    console.log(checkbox);
+
+    if (checkbox) checkbox.checked = false;
+
+    form.requestSubmit();
+});
+
+// ------------- Calender Drawer ------------------------ //
+let currentHotelPrice = 0;
+
+document.addEventListener('DOMContentLoaded', function(e) {
+    const dateOverlay = document.getElementById('date-drawer-overlay');
+    const dateDrawer = document.getElementById('date-picker-drawer');
+    const rangeText = document.getElementById('drawer-date-range-text');
+
+    function openDateDrawer() {
+        const container = document.getElementById("inline-calendar-container");
+        
+        // Always destroy the old one to prevent "ghost" calendars
+        if (window.drawerPicker) {
+            window.drawerPicker.destroy();
+        }
+
+        // Initialize AFTER the drawer is visible
+        window.drawerPicker = flatpickr(container, {
+            inline: true,
+            mode: "range",
+            minDate: "today",
+            showMonths: 2,
+            static: true, // Helps with positioning in scrolling drawers
+            onChange: function(selectedDates, dateStr, instance) {
+                const rangeText = document.getElementById('drawer-date-range-text');
+                if (selectedDates.length === 2) {
+                    const start = instance.formatDate(selectedDates[0], "M j");
+                    const end = instance.formatDate(selectedDates[1], "M j");
+                    rangeText.textContent = `${start} — ${end}`;
+                }
+            }
+        });
+    }
+
+    // 2. Open Logic
+    document.addEventListener('click', function(e) {
+        const btn = e.target.closest('.date-selection-btn'); 
+        if (btn) {
+            currentHotelPrice = parseFloat(btn.getAttribute('data-price')) || 0;
+            const overlay = document.getElementById('date-drawer-overlay');
+            const drawer = document.getElementById('date-picker-drawer');
+            
+            overlay.classList.add('active');
+            drawer.classList.add('active');
+            
+            // THE FIX: Wait 50ms for the CSS animation to start/display to change
+            setTimeout(() => {
+                openDateDrawer();
+            }, 50);
+        }
+    });
+
+    // 3. Close Logic
+    const closeElements = document.querySelectorAll('[data-action="close-date"]');
+    closeElements.forEach(el => {
+        el.addEventListener('click', () => {
+            dateOverlay.classList.remove('active');
+            dateDrawer.classList.remove('active');
+        });
+    });
+
+    // 4. Apply Dates Logic
+    document.getElementById('apply-drawer-dates').addEventListener('click', () => {
+        const selected = drawerPicker.selectedDates;
+        if (selected.length === 2) {
+            // Push these dates to your main search bar inputs
+            const mainCheckin = document.getElementById('checkin');
+            const mainCheckout = document.getElementById('checkout');
+            
+            // Format for the backend (YYYY-MM-DD)
+            mainCheckin.value = drawerPicker.formatDate(selected[0], "Y-m-d");
+            mainCheckout.value = drawerPicker.formatDate(selected[1], "Y-m-d");
+
+            // Trigger the display update in the search bar if needed
+            // ... trigger your existing update logic ...
+            
+            dateOverlay.classList.remove('active');
+            dateDrawer.classList.remove('active');
+        }
+    });
 });
 
 
@@ -281,14 +440,44 @@ function updateMapFromDOM(){
     
 }
 
-function showMarkerInfo(hotel) {
+function showMarkerInfo(hotelId) {
+    const marker = markersByHotelId[hotelId];
+    if (!marker) return;
+
+    if (marker.__parent) {
+
+        // Marker is inside a cluster
+        markerCluster.zoomToShowLayer(marker, () => {
+            animateToMarker(marker);
+        });
+    } else {
+        // Marker is visible (not clustered)
+        animateToMarker(marker);
+    }
+}
+
+function openPopup(marker) {
+    const hotel = marker.hotelData;
+
     L.popup({offset:[0,-30]})
-      .setLatLng([hotel.lat, hotel.lon])
-      .setContent(`
-        <strong>${hotel.name}</strong><br>
-        <small>${hotel.address}</small>
-      `)
-      .openOn(map);
+        .setLatLng(marker.getLatLng())
+        .setContent(`
+            <strong>${hotel.name}</strong><br>
+            <small>${hotel.address}</small>`)
+        .openOn(map);
+}
+
+function animateToMarker(marker) {
+    const latlng = marker.getLatLng();
+
+    map.flyTo(latlng, Math.max(map.getZoom(), 14), {
+        duration: 0.6,
+        easeLinearity: 0.25
+    });
+
+    map.once('moveend', () => {
+        openPopup(marker);
+    });
 }
 
 function closeMarkerInfo() {
@@ -361,6 +550,7 @@ function addHotelMarkers(hotels) {
         const marker = L.marker([hotel.lat, hotel.lon], {icon: createHotelMarkers(hotel)});
 
         marker.hotelId = hotel.id;
+        marker.hotelData = hotel;
 
         marker.on('click', (e) => {
 
@@ -381,7 +571,7 @@ function addHotelMarkers(hotels) {
             if (lockHotelId) return;
 
             clearTimeout(hoverTimeout);
-            showMarkerInfo(hotel);
+            showMarkerInfo(hotel.id);
             marker.setIcon(activeIcon);
             highlightHotelCard(hotel.id);
         });
@@ -414,7 +604,7 @@ function fitMapToMarkers() {
 function lockMarker(hotel){
     lockHotelId = hotel.id;
 
-    showMarkerInfo(hotel);
+    showMarkerInfo(hotel.id);
     highlightHotelCard(hotel.id);
     ScrollIntoView(hotel.id);
 }
@@ -459,7 +649,6 @@ document.addEventListener('click', (e) => {
     const hotelId = card.dataset.hotelId;
 
     if (lockHotelId && lockHotelId !== hotelId){
-        console.log("unlock", lockHotelId);
         resetMarkerState(lockHotelId);
         unlockMarker();
     }
@@ -484,7 +673,7 @@ document.addEventListener('mouseover', (e) => {
 
     marker.setIcon(activeIcon);
     marker.setZIndexOffset(1000);
-    showMarkerInfo(getHotelCard(card));
+    showMarkerInfo((getHotelCard(card).id));
     map.panTo(marker.getLatLng(), { animate: true, duration: 0.25 });
 });
 
@@ -506,9 +695,7 @@ document.addEventListener('mouseout', (e) => {
 });
 
 document.body.addEventListener('htmx:afterSwap', () => {
-    document
-        .querySelectorAll('hotel-list-hotel-card')
-        .forEach(card => card.classList.remove('.active'));
+    document.querySelectorAll('hotel-list-hotel-card').forEach(card => card.classList.remove('.active'));
 });
 
 // ------------- End-----------------------//
@@ -531,18 +718,21 @@ function renderUI() {
     track.style.background = `linear-gradient(to right, #E2E8F0 ${minPercent}%, #3a3a3a ${minPercent}%, #3a3a3a ${maxPercent}%, #E2E8F0 ${maxPercent}%)`;
 }
 
-function openFilterDrawer() {
-    const generalDrawer = document.getElementById('filter-drawer');
-    const amenityDrawer = document.getElementById('amenity-filter-drawer');
+function openFilterDrawer(drawerId) {
+
     const overlay = document.getElementById("filter-overlay");
+    overlay.classList.add('active');
 
     form = document.getElementById('hotel-filter-form');
-
-    overlay.classList.add('active');
-    document.body.style.overflow = 'hidden';
-    generalDrawer.classList.add('active');
-    amenityDrawer.classList.remove('active');
     drawerSnapshot = new FormData(form);
+
+    document.querySelectorAll('.filter-drawer').forEach(drawer => {
+        drawer.classList.remove('active');
+    });
+
+    document.getElementById(drawerId).classList.add('active');
+
+    document.body.style.overflow = 'hidden';
 }
 
 function closeFilterDrawer(discard = true){
@@ -595,36 +785,58 @@ function closeFilterDrawer(discard = true){
     document.body.style.overflow = 'auto';
 }
 
-function resetDrawerInputs (){
-    const minSlider = document.getElementById("min-slider");
-    const maxSlider = document.getElementById("max-slider");
-    const drawer = document.getElementById("filter-drawer");
+function resetDrawerInputs (drawerId){
 
-    // price
-    minSlider.value = minSlider.min;
-    maxSlider.value = maxSlider.max;
-    renderUI();
+    const drawer = document.getElementById(drawerId);
 
-    // rating
-    drawer.querySelectorAll('input[type="radio"]').forEach(radio => {
-        radio.checked = false;
-    });
-    drawer.querySelector('input[name="rating"][value=""]').checked = true;
+    if (drawerId === 'filter-drawer') {
+        
+        // price
+        const minSlider = document.getElementById("min-slider");
+        const maxSlider = document.getElementById("max-slider");
+        minSlider.value = minSlider.min;
+        maxSlider.value = maxSlider.max;
+        renderUI();
 
-    // amenities
-    document.querySelectorAll('input[name="amenities"]').forEach(checkbox => {
-        checkbox.checked = false;
-    });
+        // rating
+        drawer.querySelectorAll('input[type="radio"]').forEach(radio => {
+            radio.checked = false;
+        });
 
-    document.querySelectorAll('.amenity-btn').forEach(btn => {
-        btn.classList.remove('active');
-        btn.setAttribute('aria-pressed', 'false');
-        const mask = btn.querySelector("span");
+        drawer.querySelector('input[name="rating"][value=""]').checked = true;
 
-        if (mask){
-            mask.classList.remove("active");
-        }
-    });
+        // amenities
+        document.querySelectorAll('input[name="amenities"]').forEach(checkbox => {
+            checkbox.checked = false;
+        });
+
+        drawer.querySelectorAll('.amenity-btn').forEach(btn => {
+            btn.classList.remove('active');
+            btn.setAttribute('aria-pressed', 'false');
+            const mask = btn.querySelector("span");
+
+            if (mask){
+                mask.classList.remove("active");
+            }
+        });
+    }
+
+    else if (drawerId === 'amenity-filter-drawer'){
+        // amenities
+        document.querySelectorAll('input[name="amenities"]').forEach(checkbox => {
+            checkbox.checked = false;
+        });
+
+        drawer.querySelectorAll('.amenity-btn').forEach(btn => {
+            btn.classList.remove('active');
+            btn.setAttribute('aria-pressed', 'false');
+            const mask = btn.querySelector("span");
+
+            if (mask){
+                mask.classList.remove("active");
+            }
+        });
+    }
 
     // 🔑 re-sync buttons
     syncAllAmenityUI();
@@ -655,7 +867,7 @@ function initHotelFilters() {
     const resetBtn = document.getElementById('reset-filter');
 
     if (openFilterBtn) {
-        openFilterBtn.onclick = () => openFilterDrawer();
+        openFilterBtn.onclick = () => openFilterDrawer('filter-drawer');
     }
 
     if (closeFilterBtn) {
@@ -667,7 +879,7 @@ function initHotelFilters() {
     }
 
     if (resetBtn) {
-        resetBtn.onclick = resetDrawerInputs;
+        resetBtn.onclick = () =>  resetDrawerInputs('filter-drawer');
     }
 }
 
@@ -688,6 +900,10 @@ function syncAmenityUI(amenityId){
     document.querySelectorAll(`.amenity-btn[data-amenity = "${amenityId}"]`).forEach(btn => {
         btn.classList.toggle('active', input.checked);
         btn.setAttribute('aria-pressed', input.checked);
+        const mask = btn.querySelector('span');
+        if (mask){
+            mask.classList.toggle('active', input.checked);
+        }
     });
 }
 
@@ -703,17 +919,7 @@ function initAmenityButtons() {
     });
 }
 
-function openAmenityDrawer() {
-    const generalDrawer = document.getElementById('filter-drawer');
-    const amenityDrawer = document.getElementById('amenity-filter-drawer');
-    const overlay = document.getElementById("filter-overlay");
-    // document.getElementById('amenity-filter-drawer').appendChild(document.getElementById('amenity-inputs'));
-    overlay.classList.add('active');
-    amenityDrawer.classList.add('active');
-    generalDrawer.classList.remove('active');
-}
-
-function closeAmenityDrawer() {
-    document.getElementById('filter-drawer').appendChild(document.getElementById('amenity-inputs'));
+function getActivityDrawer() {
+    return document.querySelector('.filter-drawer.action');
 }
 //--------------------------------//
