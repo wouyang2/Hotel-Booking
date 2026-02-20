@@ -81,8 +81,6 @@ coverage==7.10.7
 cryptography==41.0.7
 cssselect @ file:///private/var/folders/k1/30mswbxs7r1g6zwn8y4fyt500000gp/T/abs_47oh46v5h0/croot/cssselect_1707339886455/work
 cyberbattle==0.0.6
-# Editable install with no version control (cyberbattlesim==0.1.0)
--e /Users/kiwi/Desktop/Projects/Project_One/CyberBattleSim
 cycler==0.12.1
 cytoolz @ file:///private/var/folders/nz/j6p8yfhx1mv_0grj5xl4650h0000gp/T/abs_f0etqooaak/croot/cytoolz_1701723613874/work
 dask @ file:///private/var/folders/k1/30mswbxs7r1g6zwn8y4fyt500000gp/T/abs_aaiijmokbm/croot/dask-core_1725461363220/work
